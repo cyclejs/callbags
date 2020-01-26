@@ -1,8 +1,7 @@
 import { Source, ALL } from './types';
 
 export function fromArray<T>(arr: Array<T>): Source<T> {
-  return (start, sink) => {
-    if (start !== 0) return;
+  return (_, sink) => {
     let ended = false;
 
     sink(0, (t: ALL) => {
