@@ -2,14 +2,18 @@
   "name": "@cycle/callbags",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "build/bundle.cjs.js",
+  "module": "build/bundle.esm.js",
   "scripts": {
-    "build": "tsc"
+    "build": "tsc && pnpm run bundle:esm && pnpm run bundle:cjs",
+    "bundle:esm": "rollup build/index.js --format esm --file build/bundle.esm.js",
+    "bundle:cjs": "rollup build/index.js --format cjs --file build/bundle.cjs.js"
   },
   "author": "Jan van Brügge",
   "license": "MIT",
   "devDependencies": {
     "prettier": "^1.19.1",
+    "rollup": "^1.29.1",
     "typescript": "^3.7.5"
   },
   "prettier": {

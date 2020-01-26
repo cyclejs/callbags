@@ -1,8 +1,24 @@
 devDependencies:
   prettier: 1.19.1
+  rollup: 1.29.1
   typescript: 3.7.5
 lockfileVersion: 5.1
 packages:
+  /@types/estree/0.0.42:
+    dev: true
+    resolution:
+      integrity: sha512-K1DPVvnBCPxzD+G51/cxVIoc2X8uUVl1zpJeE6iKcgHMj4+tbat5Xu4TjV7v2QSDbIeAfLi2hIk+u2+s0MlpUQ==
+  /@types/node/13.5.0:
+    dev: true
+    resolution:
+      integrity: sha512-Onhn+z72D2O2Pb2ql2xukJ55rglumsVo1H6Fmyi8mlU9SvKdBk/pUSUAiBY/d9bAOF7VVWajX3sths/+g6ZiAQ==
+  /acorn/7.1.0:
+    dev: true
+    engines:
+      node: '>=0.4.0'
+    hasBin: true
+    resolution:
+      integrity: sha512-kL5CuoXA/dgxlBbVrflsflzQ3PAas7RYZB52NOm/6839iVYJgKMJ3cQJD+t2i5+qFa8h3MDpEOJiS64E8JLnSQ==
   /prettier/1.19.1:
     dev: true
     engines:
@@ -10,6 +26,15 @@ packages:
     hasBin: true
     resolution:
       integrity: sha512-s7PoyDv/II1ObgQunCbB9PdLmUcBZcnWOcxDh7O0N/UwDEsHyqkW+Qh28jW+mVuCdx7gLB0BotYI1Y6uI9iyew==
+  /rollup/1.29.1:
+    dependencies:
+      '@types/estree': 0.0.42
+      '@types/node': 13.5.0
+      acorn: 7.1.0
+    dev: true
+    hasBin: true
+    resolution:
+      integrity: sha512-dGQ+b9d1FOX/gluiggTAVnTvzQZUEkCi/TwZcax7ujugVRHs0nkYJlV9U4hsifGEMojnO+jvEML2CJQ6qXgbHA==
   /typescript/3.7.5:
     dev: true
     engines:
@@ -19,4 +44,5 @@ packages:
       integrity: sha512-/P5lkRXkWHNAbcJIiHPfRoKqyd7bsyCma1hZNUGfn20qm64T6ZBlrzprymeu918H+mB/0rIg2gGK/BXkhhYgBw==
 specifiers:
   prettier: ^1.19.1
+  rollup: ^1.29.1
   typescript: ^3.7.5
