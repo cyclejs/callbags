@@ -12,3 +12,6 @@ export { subscribe, Observer } from './subscribe';
 
 // Helpers
 export { pipe } from './pipe';
+
+// Types
+export { Sink, Source, Operator, ALL, START, DATA, END } from './types';

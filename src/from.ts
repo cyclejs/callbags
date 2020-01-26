@@ -1,11 +1,11 @@
-import { Source, ALL } from './types';
+import { Source, ALL, END } from './types';
 
 export function fromArray<T>(arr: Array<T>): Source<T> {
   return (_, sink) => {
     let ended = false;
 
-    sink(0, (t: ALL) => {
-      if (t === 2) ended = true;
+    sink(0, (_: END) => {
+      ended = true;
     });
 
     for (let i = 0; i < arr.length; i++) {
@@ -18,7 +18,6 @@ export function fromArray<T>(arr: Array<T>): Source<T> {
 
 export function fromPromise<T>(p: Promise<T>): Source<T> {
   return (start, sink) => {
-    if (start !== 0) return;
     let ended = false;
 
     const resolve = (x: T) => {
@@ -35,8 +34,8 @@ export function fromPromise<T>(p: Promise<T>): Source<T> {
 
     p.then(resolve, reject);
 
-    sink(0, (t: ALL) => {
-      if (t === 2) ended = true;
+    sink(0, (_: END) => {
+      ended = true;
     });
   };
 }
