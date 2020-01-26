@@ -1,6 +1,6 @@
 # @cycle/callbags
 
-This is the set of [callbags](https://github.com/callbag/callbag/blob/master/readme.md) that will most likely be used in the next version of Cycle.js. They are written in TypeScript and export ES modules to allow for tree shaking.
+This is the set of [callbags](https://github.com/callbag/callbag/blob/master/readme.md) that will most likely be used in the next version of Cycle.js. They are written in TypeScript and export ES modules to allow for tree shaking. Also, the implementation is specifically tailored to the Cycle.js use case, so all of them are push-only. Using them with sink or operators that try to pull the sources here will most likely lead to bugs und weird behavior.
 
 ## Building
 
@@ -31,7 +31,7 @@ Currently, the following set of operators is implemented, others might follow. N
 
 ### Sinks
 
-- [`forEach`](./src/forEach.ts)
+- [`subscribe`](./src/subscribe.ts)
 
 ### Helpers
 

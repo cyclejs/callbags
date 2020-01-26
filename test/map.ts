@@ -1,7 +1,7 @@
 import * as assert from 'assert';
 import * as fc from 'fast-check';
 
-import { map, fromArray, forEach, pipe } from '../src/index';
+import { map, fromArray, subscribe, pipe } from '../src/index';
 
 describe('map()', () => {
   it('should behave like Array.map()', () => {
@@ -11,11 +11,7 @@ describe('map()', () => {
 
         let res: any[] = [];
 
-        pipe(
-          fromArray(arr),
-          map(f),
-          forEach(x => res.push(x))
-        );
+        pipe(fromArray(arr), map(f), subscribe({ next: x => res.push(x) }));
 
         assert.deepStrictEqual(oracle, res);
       })

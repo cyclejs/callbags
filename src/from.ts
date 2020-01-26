@@ -3,37 +3,17 @@ import { Source, ALL } from './types';
 export function fromArray<T>(arr: Array<T>): Source<T> {
   return (start, sink) => {
     if (start !== 0) return;
-    let index = 0;
-    let completed = false;
-    let got1 = false;
-    let inloop = false;
+    let ended = false;
 
     sink(0, (t: ALL) => {
-      if (completed) return;
-
-      if (t === 1) {
-        got1 = true;
-        if (!inloop && index < arr.length) {
-          inloop = true;
-
-          while (got1 && !completed) {
-            got1 = false;
-
-            sink(1, arr[index]);
-            index++;
-
-            if (index >= arr.length) {
-              sink(2);
-              break;
-            }
-          }
-
-          inloop = false;
-        }
-      } else if (t === 2) {
-        completed = true;
-      }
+      if (t === 2) ended = true;
     });
+
+    for (let i = 0; i < arr.length; i++) {
+      if (ended) break;
+      sink(1, arr[i]);
+    }
+    if (!ended) sink(2);
   };
 }
 

@@ -7,7 +7,7 @@ export { take, first } from './take';
 export { filter } from './filter';
 
 // Sinks
-export { forEach } from './forEach';
+export { subscribe, Observer } from './subscribe';
 
 // Helpers
 export { pipe } from './pipe';
