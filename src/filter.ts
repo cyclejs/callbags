@@ -1,9 +1,7 @@
 import { Operator } from './types';
 
 export function filter<A>(predicate: (a: A) => boolean): Operator<A, A> {
-  return source => (start, sink) => {
-    if (start !== 0) return;
-
+  return source => (_, sink) => {
     source(0, (t, d) => {
       if (t === 1) {
         if (predicate(d)) sink(t, d);

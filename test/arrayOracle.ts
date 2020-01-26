@@ -1,24 +1,29 @@
 import * as assert from 'assert';
 import * as fc from 'fast-check';
 
-import { map, fromArray, subscribe, pipe } from '../src/index';
+import { filter, map, fromArray, subscribe, pipe } from '../src/index';
+
+function oneOf<T>(...args: T[]): fc.Arbitrary<T> {
+  return fc.integer(0, args.length - 1).map(i => args[i]);
+}
 
 describe('using Array as oracle', () => {
-  function mkOracleTest<T extends (...args: any[]) => any>(
-    fnArbitrary: fc.Arbitrary<T>,
-    wrapFn: (f: T) => (arg: any) => any = f => x => f(x)
+  function mkOracleTest<T, U>(
+    fnArbitrary: fc.Arbitrary<(t: T) => U>,
+    arg: fc.Arbitrary<T>,
+    sut: any,
+    arrayFnName: string
   ) {
     fc.assert(
-      fc.property(fc.array(fc.anything()), fnArbitrary, (arr, f) => {
-        const oracle = arr.map(wrapFn(f));
+      fc.property(fc.array(arg), fnArbitrary, (arr: any, f) => {
+        const oracle = arr[arrayFnName]((x: any) => f(x));
 
         let res: any[] = [];
-
         let completed = 0;
 
         pipe(
           fromArray(arr),
-          map(wrapFn(f)),
+          sut(f),
           subscribe({
             next: x => res.push(x),
             complete: () => {
@@ -34,10 +39,15 @@ describe('using Array as oracle', () => {
   }
 
   it('map()', () => {
-    mkOracleTest(fc.func(fc.anything()));
+    mkOracleTest<any, any>(fc.func(fc.anything()), fc.anything(), map, 'map');
   });
 
   it('filter()', () => {
-    mkOracleTest(fc.compareBooleanFunc(), f => x => f(x, 0));
+    const fns = oneOf<(x: number) => boolean>(
+      x => x > 0,
+      x => x % 2 === 0
+    );
+
+    mkOracleTest(fns, fc.integer(), filter, 'filter');
   });
 });
