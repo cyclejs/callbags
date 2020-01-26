@@ -2,6 +2,7 @@ devDependencies:
   '@types/assert': 1.4.4
   '@types/mocha': 5.2.7
   assert: 2.0.0
+  fast-check: 1.21.0
   mocha: 7.0.1
   prettier: 1.19.1
   rollup: 1.29.1
@@ -254,6 +255,15 @@ packages:
     hasBin: true
     resolution:
       integrity: sha512-eGuFFw7Upda+g4p+QHvnW0RyTX/SVeJBDM/gCtMARO0cLuT2HcEKnTPvhjV6aGeqrCB/sbNop0Kszm0jsaWU4A==
+  /fast-check/1.21.0:
+    dependencies:
+      pure-rand: 1.7.0
+      tslib: 1.10.0
+    dev: true
+    engines:
+      node: '>=0.12'
+    resolution:
+      integrity: sha512-t9E+rNNV8DNSUqxvUwJ8DBAVm0qiGsVktvUXB3zUC9PTnNbYqGvGVycL6osOo+CRWH8nJYLk/fXynqdag2StdQ==
   /fill-range/7.0.1:
     dependencies:
       to-regex-range: 5.0.1
@@ -650,6 +660,10 @@ packages:
     hasBin: true
     resolution:
       integrity: sha512-s7PoyDv/II1ObgQunCbB9PdLmUcBZcnWOcxDh7O0N/UwDEsHyqkW+Qh28jW+mVuCdx7gLB0BotYI1Y6uI9iyew==
+  /pure-rand/1.7.0:
+    dev: true
+    resolution:
+      integrity: sha512-Mpghwu8LvQUpr8NRFmGTgX8mFi8WHqor9oE0cCj2Sk5XjA10lBx880qUXtXQPYzrUL8NVQ87nqZvV7LI6gVdOw==
   /readdirp/3.2.0:
     dependencies:
       picomatch: 2.2.1
@@ -806,6 +820,10 @@ packages:
       typescript: '>=2.7'
     resolution:
       integrity: sha512-4mZEbofxGqLL2RImpe3zMJukvEvcO1XP8bj8ozBPySdCUXEcU5cIRwR0aM3R+VoZq7iXc8N86NC0FspGRqP4gg==
+  /tslib/1.10.0:
+    dev: true
+    resolution:
+      integrity: sha512-qOebF53frne81cf0S9B41ByenJ3/IuH8yJKngAX35CmiZySA0khhkovshKK+jGCaMnVomla7gVlIcc3EvKPbTQ==
   /typescript/3.7.5:
     dev: true
     engines:
@@ -900,6 +918,7 @@ specifiers:
   '@types/assert': ^1.4.4
   '@types/mocha': ^5.2.7
   assert: ^2.0.0
+  fast-check: ^1.21.0
   mocha: ^7.0.1
   prettier: ^1.19.1
   rollup: ^1.29.1

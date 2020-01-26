@@ -1,7 +1,7 @@
-import * as assert from 'assert';
+import * as fc from 'fast-check';
 
 describe('mocha test', () => {
   it('simple test', () => {
-    assert.equal(true, true);
+    fc.assert(fc.property(fc.string(), text => text.indexOf(text) === 0));
   });
 });
