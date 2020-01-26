@@ -11,9 +11,21 @@ describe('map()', () => {
 
         let res: any[] = [];
 
-        pipe(fromArray(arr), map(f), subscribe({ next: x => res.push(x) }));
+        let completed = 0;
 
-        assert.deepStrictEqual(oracle, res);
+        pipe(
+          fromArray(arr),
+          map(f),
+          subscribe({
+            next: x => res.push(x),
+            complete: () => {
+              assert.deepStrictEqual(oracle, res);
+              completed++;
+            }
+          })
+        );
+
+        assert.strictEqual(completed, 1);
       })
     );
   });
