@@ -21,6 +21,7 @@ Currently, the following set of operators is implemented, others might follow. N
 - [`fromPromise`](./src/from.ts)
 - [`from`](./src/from.ts)
 - [`of`](./src/from.ts)
+- [`throwError`](./src/throwError.ts)
 
 ### Operators
 
