@@ -22,6 +22,7 @@ Currently, the following set of operators is implemented, others might follow. N
 - [`from`](./src/from.ts)
 - [`of`](./src/from.ts)
 - [`throwError`](./src/throwError.ts)
+- [`merge`](./src/merge.ts)
 
 ### Operators
 

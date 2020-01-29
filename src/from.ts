@@ -1,4 +1,4 @@
-import { Source, ALL, END } from './types';
+import { Source, END } from './types';
 
 export function fromArray<T>(arr: Array<T>): Source<T> {
   return (_, sink) => {
@@ -17,7 +17,7 @@ export function fromArray<T>(arr: Array<T>): Source<T> {
 }
 
 export function fromPromise<T>(p: Promise<T>): Source<T> {
-  return (start, sink) => {
+  return (_, sink) => {
     let ended = false;
 
     const resolve = (x: T) => {

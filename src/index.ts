@@ -1,6 +1,7 @@
 // Factories
 export { fromArray, fromPromise, from, of } from './from';
 export { throwError } from './throwError';
+export { merge } from './merge';
 
 // Operators
 export { map } from './map';
