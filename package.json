@@ -8,7 +8,9 @@
     "build": "tsc && pnpm run bundle:esm && pnpm run bundle:cjs",
     "bundle:esm": "rollup build/index.js --format esm --file build/bundle.esm.js",
     "bundle:cjs": "rollup build/index.js --format cjs --file build/bundle.cjs.js",
-    "test": "nyc --reporter text --reporter html mocha --require ts-node/register 'test/*.ts'"
+    "test": "nyc --reporter text --reporter html pnpm run test:no_cover",
+    "test:ci": "nyc --reporter text --reporter json pnpm run test:no_cover",
+    "test:no_cover": "mocha --require ts-node/register 'test/*.ts'"
   },
   "author": "Jan van Brügge",
   "license": "MIT",
