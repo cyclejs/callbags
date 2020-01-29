@@ -30,6 +30,7 @@ Currently, the following set of operators is implemented, others might follow. N
 - [`take`](./src/take.ts)
 - [`first`](./src/take.ts)
 - [`filter`](./src/filter.ts)
+- [`startWith`](./src/startWith.ts)
 
 ### Sinks
 
