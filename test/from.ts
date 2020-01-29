@@ -1,5 +1,6 @@
 import * as assert from 'assert';
 import * as fc from 'fast-check';
+import { unsubscribeEarly } from './helpers';
 
 import {
   pipe,
@@ -7,8 +8,7 @@ import {
   subscribe,
   from,
   fromArray,
-  fromPromise,
-  Operator
+  fromPromise
 } from '../src/index';
 
 describe('fromArray', () => {
@@ -99,20 +99,6 @@ describe('fromPromise', () => {
       })
     );
   });
-
-  function unsubscribeEarly(when: (a: any) => boolean): Operator<any, any> {
-    return source => (_, sink) => {
-      let talkback: any;
-      source(0, (t, d) => {
-        if (t === 0) talkback = d;
-        if (when(t)) {
-          talkback(2);
-          sink(2);
-        }
-        sink(t, d);
-      });
-    };
-  }
 
   it('should not send error if unsubscribed already', done => {
     pipe(

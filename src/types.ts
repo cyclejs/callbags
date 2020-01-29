@@ -6,7 +6,7 @@ export type ALL = START | DATA | END;
 
 export type Callbag<T> = (type: START, payload: any | T) => void;
 
-export type Source<T> = (type: START, payload: Talkback<T>) => void;
+export type Source<T> = (type: START, sink: Talkback<T>) => void;
 
 export type Sink<T> = (source: Source<T>) => void;
 

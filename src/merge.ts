@@ -1,4 +1,4 @@
-import { Source, Talkback } from './types';
+import { Source, END } from './types';
 
 export function merge<T>(...sources: Source<T>[]): Source<T> {
   return (_, sink) => {
@@ -8,10 +8,10 @@ export function merge<T>(...sources: Source<T>[]): Source<T> {
     let startCount = 0;
     let endCount = 0;
 
-    const talkback: Talkback<any> = (t, d) => {
-      if (t === 2) ended = true;
+    const talkback = (_: END, d: any) => {
+      ended = true;
       for (let i = 0; i < n; i++) {
-        sourceTalkbacks[i]?.(t, d);
+        sourceTalkbacks[i]?.(2, d);
       }
     };
 
@@ -25,7 +25,7 @@ export function merge<T>(...sources: Source<T>[]): Source<T> {
         } else if (t === 2 && d) {
           ended = true;
           for (let j = 0; j < n; j++) {
-            if (j !== i) sourceTalkbacks[i]?.(2);
+            if (j !== i) sourceTalkbacks[j]?.(2);
           }
           sink(2, d);
         } else if (t === 2) {
