@@ -10,7 +10,8 @@
     "bundle:cjs": "rollup build/index.js --format cjs --file build/bundle.cjs.js",
     "test": "nyc --reporter text --reporter html pnpm run test:no_cover",
     "test:ci": "nyc --reporter text --reporter json pnpm run test:no_cover",
-    "test:no_cover": "mocha --require ts-node/register 'test/*.ts'"
+    "test:no_cover": "mocha --require ts-node/register 'test/*.ts'",
+    "prepublishOnly": "pnpm test && pnpm run build"
   },
   "author": "Jan van Brügge",
   "license": "MIT",
