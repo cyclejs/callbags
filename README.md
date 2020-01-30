@@ -27,6 +27,7 @@ Currently, the following set of operators is implemented, others might follow. N
 ### Operators
 
 - [`map`](./src/map.ts)
+- [`scan`](./src/map.ts)
 - [`take`](./src/take.ts)
 - [`first`](./src/take.ts)
 - [`filter`](./src/filter.ts)

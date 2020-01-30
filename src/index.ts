@@ -4,7 +4,7 @@ export { throwError } from './throwError';
 export { merge } from './merge';
 
 // Operators
-export { map } from './map';
+export { map, scan } from './map';
 export { take, first } from './take';
 export { filter } from './filter';
 export { startWith } from './startWith';
