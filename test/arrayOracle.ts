@@ -1,7 +1,16 @@
 import * as assert from 'assert';
 import * as fc from 'fast-check';
 
-import { filter, map, fromArray, subscribe, pipe, scan } from '../src/index';
+import {
+  filter,
+  map,
+  fromArray,
+  subscribe,
+  pipe,
+  scan,
+  take,
+  first
+} from '../src/index';
 
 function oneOf<T>(...args: T[]): fc.Arbitrary<T> {
   return fc.integer(0, args.length - 1).map(i => args[i]);
@@ -111,6 +120,56 @@ describe('using Array as oracle', () => {
         pipe(
           fromArray(arr),
           scan(f),
+          subscribe({
+            next: data => res.push(data),
+            error: () => assert.fail('should not call error'),
+            complete: () => {
+              completed = true;
+            }
+          })
+        );
+
+        assert.strictEqual(completed, true);
+        assert.deepStrictEqual(res, oracle);
+      })
+    );
+  });
+
+  it('take()', () => {
+    fc.assert(
+      fc.property(fc.array(fc.integer(), 0, 100), fc.nat(150), (arr, n) => {
+        const oracle = arr.slice(0, n);
+
+        let res: any[] = [];
+        let completed = false;
+        pipe(
+          fromArray(arr),
+          take(n),
+          subscribe({
+            next: data => res.push(data),
+            error: () => assert.fail('should not call error'),
+            complete: () => {
+              completed = true;
+            }
+          })
+        );
+
+        assert.strictEqual(completed, true);
+        assert.deepStrictEqual(res, oracle);
+      })
+    );
+  });
+
+  it('first()', () => {
+    fc.assert(
+      fc.property(fc.array(fc.integer(), 0, 100), arr => {
+        const oracle = arr.slice(0, 1);
+
+        let res: any[] = [];
+        let completed = false;
+        pipe(
+          fromArray(arr),
+          first(),
           subscribe({
             next: data => res.push(data),
             error: () => assert.fail('should not call error'),
