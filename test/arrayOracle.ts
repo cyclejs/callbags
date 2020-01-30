@@ -9,7 +9,9 @@ import {
   pipe,
   scan,
   take,
-  first
+  first,
+  last,
+  skip
 } from '../src/index';
 
 function oneOf<T>(...args: T[]): fc.Arbitrary<T> {
@@ -170,6 +172,56 @@ describe('using Array as oracle', () => {
         pipe(
           fromArray(arr),
           first(),
+          subscribe({
+            next: data => res.push(data),
+            error: () => assert.fail('should not call error'),
+            complete: () => {
+              completed = true;
+            }
+          })
+        );
+
+        assert.strictEqual(completed, true);
+        assert.deepStrictEqual(res, oracle);
+      })
+    );
+  });
+
+  it('skip()', () => {
+    fc.assert(
+      fc.property(fc.array(fc.integer(), 0, 100), fc.nat(150), (arr, n) => {
+        const oracle = arr.slice(n);
+
+        let res: any[] = [];
+        let completed = false;
+        pipe(
+          fromArray(arr),
+          skip(n),
+          subscribe({
+            next: data => res.push(data),
+            error: () => assert.fail('should not call error'),
+            complete: () => {
+              completed = true;
+            }
+          })
+        );
+
+        assert.strictEqual(completed, true);
+        assert.deepStrictEqual(res, oracle);
+      })
+    );
+  });
+
+  it('last()', () => {
+    fc.assert(
+      fc.property(fc.array(fc.integer(), 0, 100), arr => {
+        const oracle = arr.slice(-1);
+
+        let res: any[] = [];
+        let completed = false;
+        pipe(
+          fromArray(arr),
+          last(),
           subscribe({
             next: data => res.push(data),
             error: () => assert.fail('should not call error'),

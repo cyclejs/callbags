@@ -32,6 +32,8 @@ Currently, the following set of operators is implemented, others might follow. N
 - [`first`](./src/take.ts)
 - [`filter`](./src/filter.ts)
 - [`startWith`](./src/startWith.ts)
+- [`skip`](./src/skip.ts)
+- [`last`](./src/skip.ts)
 
 ### Sinks
 
