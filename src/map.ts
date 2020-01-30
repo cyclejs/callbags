@@ -14,7 +14,7 @@ export function scan<A, B>(
   start?: B
 ): Operator<A, B> {
   return source => (_, sink) => {
-    let acc: any = start ?? undef;
+    let acc: any = arguments.length === 2 ? start : undef;
     source(0, (t, d) => {
       if (t === 0) {
         sink(t, d);
