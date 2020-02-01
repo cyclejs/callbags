@@ -1,0 +1,13 @@
+sudo: false
+language: node_js
+node_js:
+  - '10.16.0'
+script:
+  - pnpm run build && pnpm run test:ci
+before_install:
+  - curl -L https://unpkg.com/@pnpm/self-installer | node
+install:
+  - pnpm install
+cache:
+  directories:
+    - /home/travis/.pnpm-store
