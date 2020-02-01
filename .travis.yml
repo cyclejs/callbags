@@ -4,6 +4,8 @@ node_js:
   - '10.16.0'
 script:
   - pnpm run build && pnpm run test:ci
+after_script:
+  - bash <(curl -s https://codecov.io/bash)
 before_install:
   - curl -L https://unpkg.com/@pnpm/self-installer | node
 install:
