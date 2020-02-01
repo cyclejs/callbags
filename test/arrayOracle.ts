@@ -11,7 +11,8 @@ import {
   take,
   first,
   last,
-  skip
+  skip,
+  flatten
 } from '../src/index';
 
 function oneOf<T>(...args: T[]): fc.Arbitrary<T> {
@@ -233,6 +234,31 @@ describe('using Array as oracle', () => {
 
         assert.strictEqual(completed, true);
         assert.deepStrictEqual(res, oracle);
+      })
+    );
+  });
+
+  it('flatten()', () => {
+    fc.assert(
+      fc.property(fc.array(fc.array(fc.integer(), 0, 100), 0, 100), arr => {
+        const oracle = arr.reduce((acc, curr) => acc.concat(curr), []);
+
+        let completed = false;
+        let result: any[] = [];
+        pipe(
+          fromArray(arr.map(fromArray)),
+          flatten(),
+          subscribe({
+            next: data => result.push(data),
+            error: () => assert.fail('should not call error'),
+            complete: () => {
+              completed = true;
+            }
+          })
+        );
+
+        assert.strictEqual(completed, true);
+        assert.deepStrictEqual(result, oracle);
       })
     );
   });

@@ -9,6 +9,7 @@ export { take, first } from './take';
 export { filter } from './filter';
 export { startWith } from './startWith';
 export { skip, last } from './skip';
+export { flatten } from './flatten';
 
 // Sinks
 export { subscribe, Observer } from './subscribe';

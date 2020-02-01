@@ -34,6 +34,7 @@ Currently, the following set of operators is implemented, others might follow. N
 - [`startWith`](./src/startWith.ts)
 - [`skip`](./src/skip.ts)
 - [`last`](./src/skip.ts)
+- [`flatten`](./src/flatten.ts)
 
 ### Sinks
 
