@@ -2,6 +2,7 @@
 export { fromArray, fromPromise, from, of } from './from';
 export { throwError } from './throwError';
 export { merge } from './merge';
+export { combineWith, combine } from './combine';
 
 // Operators
 export { map, scan } from './map';
