@@ -1,5 +1,4 @@
 import { Operator } from './types';
-import { undef } from './constants';
 
 export function map<A, B>(f: (a: A) => B): Operator<A, B> {
   return source => (_, sink) => {
@@ -13,15 +12,19 @@ export function scan<A, B>(
   f: (accumulator: B, current: A) => B,
   start?: B
 ): Operator<A, B> {
+  let hasAcc = arguments.length === 2;
   return source => (_, sink) => {
-    let acc: any = arguments.length === 2 ? start : undef;
+    let acc: any = start;
     source(0, (t, d) => {
       if (t === 0) {
         sink(t, d);
-        if (acc !== undef) sink(1, acc);
+        if (hasAcc) sink(1, acc);
       } else if (t === 1) {
-        if (acc === undef) acc = d;
-        else acc = f(acc, d);
+        if (hasAcc) acc = f(acc, d);
+        else {
+          hasAcc = true;
+          acc = d;
+        }
 
         sink(1, acc);
       } else sink(t, d);
