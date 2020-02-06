@@ -5,7 +5,11 @@ import { Observable } from 'rxjs';
 import * as most from 'most';
 
 export const options = {
-  size: 1000000
+  size: 1000000,
+  defer: true,
+  onError: (e: any) => {
+    e.currentTarget.failure = e.error;
+  }
 };
 
 const noop = () => {};

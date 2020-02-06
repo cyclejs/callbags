@@ -11,6 +11,7 @@
     "test": "nyc --reporter text --reporter html pnpm run test:no_cover",
     "test:ci": "nyc --reporter text --reporter json pnpm run test:no_cover",
     "test:no_cover": "mocha --require ts-node/register 'test/*.ts'",
+    "benchmark": "ts-node perf/index.ts",
     "prepublishOnly": "pnpm test && pnpm run build"
   },
   "author": "Jan van Brügge",

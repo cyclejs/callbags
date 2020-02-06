@@ -1,7 +1,6 @@
 import { Suite } from 'benchmark';
 import {
   options,
-  runSuite,
   runXStream,
   runCallbags,
   runCallbagBasics,
@@ -23,18 +22,11 @@ const arr = Array(options.size)
 const add = (x: number, y: number) => x + y;
 const passthrough = <T>(_: any, x: T) => x;
 
-const opts = {
-  defer: true,
-  onError: (e: any) => {
-    e.currentTarget.failure = e.error;
-  }
-};
-
-export const suite = new Suite(`scan -> scan ${options.size} integers`)
+export const fold = new Suite(`scan -> scan ${options.size} integers`)
   .add(
     '@cycle/callbags',
     runCallbags(pipe(fromArray(arr), scan(add, 0), scan(passthrough, 0))),
-    opts
+    options
   )
   .add(
     'callbag-basics',
@@ -45,7 +37,7 @@ export const suite = new Suite(`scan -> scan ${options.size} integers`)
         basics.scan(passthrough, 0)
       )
     ),
-    opts
+    options
   )
   .add(
     'xstream',
@@ -55,12 +47,12 @@ export const suite = new Suite(`scan -> scan ${options.size} integers`)
         .fold(add, 0)
         .fold(passthrough, 0)
     ),
-    opts
+    options
   )
   .add(
     'rxjs',
     runRxJs(rxjsFrom(arr).pipe(rxjs.scan(add, 0), rxjs.scan(passthrough, 0))),
-    opts
+    options
   )
   .add(
     'most',
@@ -70,7 +62,5 @@ export const suite = new Suite(`scan -> scan ${options.size} integers`)
         .scan(add, 0)
         .scan(passthrough, 0)
     ),
-    opts
+    options
   );
-
-runSuite(suite);
