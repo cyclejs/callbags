@@ -3,7 +3,6 @@ import { Stream } from 'xstream';
 import { subscribe, Source } from '../src/index';
 import { Observable } from 'rxjs';
 import * as most from 'most';
-import * as basics from 'callbag-basics';
 
 export const options = {
   size: 1000000
@@ -77,15 +76,7 @@ export function runCallbags(source: Source<any>): (fn: any) => void {
 }
 
 export function runCallbagBasics(source: any): (fn: any) => void {
-  return f =>
-    source(0, (t: any, d: any) => {
-      if (t === 2 && !d) {
-        f.resolve();
-      } else if (t === 2) {
-        f.benchmark.emit({ type: 'error', error: d });
-        f.resolve(d);
-      }
-    });
+  return f => subscribe(mkObserver(f))(source);
 }
 
 export function runRxJs(observable: Observable<any>): (fn: any) => void {

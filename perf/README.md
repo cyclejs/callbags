@@ -7,10 +7,10 @@ Run on a Lenovo Yoga X1 2nd Gen, 2.7 GHz Intel Core i7, ts-node `v8.6.2`
 ```
 scan -> scan 1000000 integers
 -----------------------------------------------------
-@cycle/callbags    25.69 op/s ±  0.59%   (63 samples)
-callbag-basics     26.60 op/s ±  0.71%   (65 samples)
-xstream            14.49 op/s ±  1.29%   (69 samples)
-rxjs               15.10 op/s ±  1.75%   (72 samples)
-most               27.80 op/s ±  1.97%   (67 samples)
+@cycle/callbags    25.17 op/s ±  0.87%   (62 samples)
+callbag-basics     24.98 op/s ±  1.05%   (62 samples)
+xstream            14.03 op/s ±  1.67%   (68 samples)
+rxjs               14.29 op/s ±  3.08%   (70 samples)
+most               28.32 op/s ±  1.86%   (67 samples)
 -----------------------------------------------------
 ```
