@@ -4,6 +4,7 @@ node_js:
 os: 'linux'
 script:
   - pnpm run build && pnpm run test:ci
+  - pnpm run benchmark
 after_script:
   - bash <(curl -s https://codecov.io/bash)
 before_install:
