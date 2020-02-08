@@ -36,28 +36,33 @@ function padl(n: number, s: string): string {
   );
 }
 
-export function runSuite(s: Suite): void {
-  s.on('start', function(this: any) {
-    console.log(this.name);
-    console.log(line());
-  })
-    .on('cycle', function(event: any) {
-      const t = event.target;
-      if (t.failure) {
-        console.error(`${padl(16, t.name)}FAILED: ${t.failure}`);
-      } else {
-        const result =
-          padl(16, t.name) +
-          padr(13, t.hz.toFixed(2) + ' op/s') +
-          ' \xb1' +
-          padr(7, t.stats.rme.toFixed(2) + '%') +
-          padr(15, ` (${t.stats.sample.length} samples)`);
-
-        console.log(result);
-      }
+export function runSuite(s: Suite): Promise<void> {
+  return new Promise(resolve => {
+    s.on('start', function(this: any) {
+      console.log(this.name);
+      console.log(line());
     })
-    .on('complete', () => console.log(line()))
-    .run();
+      .on('cycle', function(event: any) {
+        const t = event.target;
+        if (t.failure) {
+          console.error(`${padl(16, t.name)}FAILED: ${t.failure}`);
+        } else {
+          const result =
+            padl(16, t.name) +
+            padr(13, t.hz.toFixed(2) + ' op/s') +
+            ' \xb1' +
+            padr(7, t.stats.rme.toFixed(2) + '%') +
+            padr(15, ` (${t.stats.sample.length} samples)`);
+
+          console.log(result);
+        }
+      })
+      .on('complete', () => {
+        console.log(line());
+        resolve();
+      })
+      .run();
+  });
 }
 
 function mkObserver(deffered: any) {
@@ -71,22 +76,24 @@ function mkObserver(deffered: any) {
   };
 }
 
-export function runXStream(stream: Stream<any>): (fn: any) => void {
-  return f => stream.addListener(mkObserver(f));
+export function runXStream(stream: () => Stream<any>): (fn: any) => void {
+  return f => stream().addListener(mkObserver(f));
 }
 
-export function runCallbags(source: Source<any>): (fn: any) => void {
-  return f => subscribe(mkObserver(f))(source);
+export function runCallbags(source: () => Source<any>): (fn: any) => void {
+  return f => {
+    try {
+      subscribe(mkObserver(f))(source());
+    } catch (e) {
+      console.error(e);
+    }
+  };
 }
 
-export function runCallbagBasics(source: any): (fn: any) => void {
-  return f => subscribe(mkObserver(f))(source);
+export function runRxJs(observable: () => Observable<any>): (fn: any) => void {
+  return f => observable().subscribe(mkObserver(f));
 }
 
-export function runRxJs(observable: Observable<any>): (fn: any) => void {
-  return f => observable.subscribe(mkObserver(f));
-}
-
-export function runMost(stream: most.Stream<any>): (fn: any) => void {
-  return f => stream.subscribe(mkObserver(f));
+export function runMost(stream: () => most.Stream<any>): (fn: any) => void {
+  return f => stream().subscribe(mkObserver(f));
 }

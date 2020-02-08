@@ -1,19 +1,11 @@
 import { Suite } from 'benchmark';
-import {
-  options,
-  runXStream,
-  runCallbags,
-  runCallbagBasics,
-  runRxJs,
-  runMost
-} from './helpers';
+import { options, runXStream, runCallbags, runRxJs, runMost } from './helpers';
 
 import { pipe, fromArray, scan } from '../src/index';
 import xs from 'xstream';
 import { from as rxjsFrom } from 'rxjs';
 import * as rxjs from 'rxjs/operators';
 import * as most from 'most';
-import * as basics from 'callbag-basics';
 
 const arr = Array(options.size)
   .fill(0)
@@ -25,23 +17,12 @@ const passthrough = <T>(_: any, x: T) => x;
 export const fold = new Suite(`scan -> scan ${options.size} integers`)
   .add(
     '@cycle/callbags',
-    runCallbags(pipe(fromArray(arr), scan(add, 0), scan(passthrough, 0))),
-    options
-  )
-  .add(
-    'callbag-basics',
-    runCallbagBasics(
-      basics.pipe(
-        fromArray(arr),
-        basics.scan(add, 0),
-        basics.scan(passthrough, 0)
-      )
-    ),
+    runCallbags(() => pipe(fromArray(arr), scan(add, 0), scan(passthrough, 0))),
     options
   )
   .add(
     'xstream',
-    runXStream(
+    runXStream(() =>
       xs
         .fromArray(arr)
         .fold(add, 0)
@@ -51,12 +32,14 @@ export const fold = new Suite(`scan -> scan ${options.size} integers`)
   )
   .add(
     'rxjs',
-    runRxJs(rxjsFrom(arr).pipe(rxjs.scan(add, 0), rxjs.scan(passthrough, 0))),
+    runRxJs(() =>
+      rxjsFrom(arr).pipe(rxjs.scan(add, 0), rxjs.scan(passthrough, 0))
+    ),
     options
   )
   .add(
     'most',
-    runMost(
+    runMost(() =>
       most
         .from(arr)
         .scan(add, 0)
