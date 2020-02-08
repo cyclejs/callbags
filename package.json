@@ -5,7 +5,7 @@
   "main": "build/bundle.cjs.js",
   "module": "build/bundle.esm.js",
   "scripts": {
-    "build": "tsc && pnpm run bundle:esm && pnpm run bundle:cjs",
+    "build": "tsc -b tsconfig.build.json && pnpm run bundle:esm && pnpm run bundle:cjs",
     "bundle:esm": "rollup build/index.js --format esm --file build/bundle.esm.js",
     "bundle:cjs": "rollup build/index.js --format cjs --file build/bundle.cjs.js",
     "test": "nyc --reporter text --reporter html pnpm run test:no_cover",

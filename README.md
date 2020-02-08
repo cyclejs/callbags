@@ -25,8 +25,8 @@ Currently, the following set of operators is implemented, others might follow. N
 - [`of`](./src/from.ts)
 - [`throwError`](./src/throwError.ts)
 - [`merge`](./src/merge.ts)
-- [`combine`](./src/combine)
-- [`combineWith`](./src/combine)
+- [`combine`](./src/combine.ts)
+- [`combineWith`](./src/combine.ts)
 
 ### Operators
 
