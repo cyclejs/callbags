@@ -1,14 +1,20 @@
 devDependencies:
   '@types/assert': 1.4.4
+  '@types/benchmark': 1.0.31
   '@types/mocha': 5.2.7
   assert: 2.0.0
+  benchmark: github.com/bestiejs/benchmark.js/42f3b732bac3640eddb3ae5f50e445f3141016fd
+  callbag-basics: 3.2.0
   fast-check: 1.21.0
   mocha: 7.0.1
+  most: 1.8.0_most@1.8.0
   nyc: 15.0.0
   prettier: 1.19.1
   rollup: 1.29.1
+  rxjs: 6.5.4
   ts-node: 8.6.2_typescript@3.7.5
   typescript: 3.7.5
+  xstream: 11.11.0
 lockfileVersion: 5.1
 packages:
   /@babel/code-frame/7.8.3:
@@ -138,10 +144,27 @@ packages:
       node: '>=8'
     resolution:
       integrity: sha512-tsAQNx32a8CoFhjhijUIhI4kccIAgmGhy8LZMZgGfmXcpMbPRUqn5LWmgRttILi6yeGmBJd2xsPkFMs0PzgPCw==
+  /@most/multicast/1.3.0_most@1.8.0:
+    dependencies:
+      '@most/prelude': 1.7.3
+      most: 1.8.0_most@1.8.0
+    dev: true
+    peerDependencies:
+      most: ^1.0.1
+    resolution:
+      integrity: sha512-DWH8AShgp5bXn+auGzf5tzPxvpmEvQJd0CNsApOci1LDF4eAEcnw4HQOr2Jaa+L92NbDYFKBSXxll+i7r1ikvw==
+  /@most/prelude/1.7.3:
+    dev: true
+    resolution:
+      integrity: sha512-qWWEnA22UP1lzFfKx75XMut6DUUXGRKe7qv2k+Bgs7ju8lwb5RjsZYyQZ+VcsYvHcIavHKzseLlBMLOe2CvUZw==
   /@types/assert/1.4.4:
     dev: true
     resolution:
       integrity: sha512-oA2uyvd1aiPbJNSEvREhJk92NYIKvt3MAg0rENZyxKrCN0NFkxtRMC6IN5ytXK+Ri/ALJtex+btq4QUnzWGoYg==
+  /@types/benchmark/1.0.31:
+    dev: true
+    resolution:
+      integrity: sha512-F6fVNOkGEkSdo/19yWYOwVKGvzbTeWkR/XQYBKtGBQ9oGRjBN9f/L4aJI4sDcVPJO58Y1CJZN8va9V2BhrZapA==
   /@types/color-name/1.1.1:
     dev: true
     resolution:
@@ -299,6 +322,129 @@ packages:
       node: '>=8'
     resolution:
       integrity: sha512-kpqOvwXnjjN44D89K5ccQC+RUrsy7jB/XLlRrx0D7/2HNcTPqzsb6XgYoErwko6QsV184CA2YgS1fxDiiDZMWA==
+  /callbag-basics/3.2.0:
+    dependencies:
+      callbag: 1.2.0
+      callbag-combine: 1.2.0
+      callbag-concat: 1.2.1
+      callbag-filter: 1.1.0
+      callbag-flatten: 1.4.0
+      callbag-for-each: 1.1.0
+      callbag-from-event: 1.2.1
+      callbag-from-iter: 1.2.0
+      callbag-from-obs: 1.2.0
+      callbag-from-promise: 1.3.0
+      callbag-interval: 1.1.0
+      callbag-map: 1.1.0
+      callbag-merge: 2.0.1
+      callbag-pipe: 1.2.0
+      callbag-scan: 1.1.0
+      callbag-share: 1.2.0
+      callbag-skip: 1.1.0
+      callbag-take: 1.4.0
+    dev: true
+    resolution:
+      integrity: sha512-+wOwoQYvn+R9q6H/co0KP05pSL4dIQGWvz3BHSshRBf17Y8P8gr7H4kZdvUl7SJ5d0raa97mHfb4ZJRyvReynw==
+  /callbag-combine/1.2.0:
+    dependencies:
+      callbag: 1.2.0
+    dev: true
+    resolution:
+      integrity: sha512-iDHfGNcBb9oIJLA//ytxU1e1W5MjjG+lIu2E2xtVs8fBba7+Zkp4wU6bnIf5II34hDxyEy8O8ct8TY6GO/W8Ig==
+  /callbag-concat/1.2.1:
+    dependencies:
+      callbag: 1.2.0
+    dev: true
+    resolution:
+      integrity: sha512-iIC4FCUF7sKnt4gDKHNjMRHekebdaA1/udjON/mCLg31EzzTO/dE9nfxpcj+G/63KopFXVQdZKQDsu7UOYGpPg==
+  /callbag-filter/1.1.0:
+    dependencies:
+      callbag: 1.2.0
+    dev: true
+    resolution:
+      integrity: sha512-m6ZHEd9JYHBAYJAdeqgt3gIKSoZOizfJTxIPd8EvDwY8Dr44+slm090WvCrrlz2SZoU8mCqpmZ8TFrGKXHo/yw==
+  /callbag-flatten/1.4.0:
+    dependencies:
+      callbag: 1.2.0
+    dev: true
+    resolution:
+      integrity: sha512-2JM/jA0Ijnuu15kqcdepVd8Iv/L3VytTFOjP0rk/BKc4/yvUUPkQfR3U2QM6Uq+DO/roOWMfrVKaMAxsZ8ciww==
+  /callbag-for-each/1.1.0:
+    dependencies:
+      callbag: 1.2.0
+    dev: true
+    resolution:
+      integrity: sha512-/FKC/dd3hnw/M1G5mlZrz/+UbtHYPz5PsmmBvpthNb67v6XuQlT93BzxQDxRHAalAjsOci8ZqoYFgmmJxwGhvg==
+  /callbag-from-event/1.2.1:
+    dependencies:
+      callbag: 1.2.0
+    dev: true
+    resolution:
+      integrity: sha512-rFZoDPqyjSxMSe2ikAfjxa76GhnTg16H36yNJNyPdrbsRvP2bYVGs32N+ddzB9qsnIBzJlwhgiHOv9Uav0HHXg==
+  /callbag-from-iter/1.2.0:
+    dev: true
+    resolution:
+      integrity: sha512-9rWvHOnRGp01YMRHHwgVZOO1vu4IRR8GcoH3FpSB16AMzum5juFWJPCMX/XnkJ9j6cic/G+kvb1Grvi6IuSmIQ==
+  /callbag-from-obs/1.2.0:
+    dependencies:
+      symbol-observable: 1.2.0
+    dev: true
+    resolution:
+      integrity: sha512-InhdPC6P4Gdpg7nuXSkocDFlb+//sbwCrVCYhxOHhSVm1gDcw/zSA+IF1gHdYtk4RQKKaCymUFCkVVUVSRThVQ==
+  /callbag-from-promise/1.3.0:
+    dependencies:
+      callbag: 1.2.0
+    dev: true
+    resolution:
+      integrity: sha512-1e6Xloc5DavrPUYIUKUNLhYTTXFtrRH/tN0qbS+LAzNeu9whCJOLEExjVfntEfSbiuADClAuIiVDLRiPBhu1mg==
+  /callbag-interval/1.1.0:
+    dependencies:
+      callbag: 1.2.0
+    dev: true
+    resolution:
+      integrity: sha512-xkYj7t/l9+GaP0kvPi6LadF3ZNSiQAhbEzwnnTrDB/UtkBCrzKPZ9Kiti8P8oHYxL2jGEuRWi86PD3uM7qXLbg==
+  /callbag-map/1.1.0:
+    dependencies:
+      callbag: 1.2.0
+    dev: true
+    resolution:
+      integrity: sha512-/xFzvJCtx1xulZpFeI4wq+ZD7tkg417XOeJ3wS9v8bHLLpt+fHKXgbZ8TBnnIxywJN6Uu/ZhL+c1DzUG6KXYFQ==
+  /callbag-merge/2.0.1:
+    dev: true
+    resolution:
+      integrity: sha512-Kl6JQ8Swc7DBuIL+Yjkgm92l82vrD2yQCNZHO8M8o6zVI+a0/RAAPLD5qrnGA1WwHLOOD6xAYsm0gzfzAJ3hkA==
+  /callbag-pipe/1.2.0:
+    dev: true
+    resolution:
+      integrity: sha512-M+LdHUK0qJkm4CRe+I870ZzD/SnzcpTsfJRzFoB2hOkNXlrVdoj002KMkfdS4pHMfV6egzZFd8j+xJu6C4kwEQ==
+  /callbag-scan/1.1.0:
+    dependencies:
+      callbag: 1.2.0
+    dev: true
+    resolution:
+      integrity: sha512-5Aw9LR8b4Fg/gC++lWrq9sXEqgO0c5Gk+HWaFhFoVqgujSUVRxFw+c4bLw1eExWrBX6OeBDbVZ/2rMr/E0q9cQ==
+  /callbag-share/1.2.0:
+    dependencies:
+      callbag: 1.2.0
+    dev: true
+    resolution:
+      integrity: sha512-Gt+D5lfJ/j3X5/3PiMPL8hHDPBmeQILZl2QYu+YJtSFz6PlNGQSL45aD4e4uoxMvhMZY9NpMHh7KRWia9PZA+g==
+  /callbag-skip/1.1.0:
+    dependencies:
+      callbag: 1.2.0
+    dev: true
+    resolution:
+      integrity: sha512-KodTVJFA1h1Z7iFvs2ocwtyvb+q38i/FJTabdMTmmPucQV+XpGH8e6BYxmYRznY4FQUTLM9e5Y5HqbUxT7ma1w==
+  /callbag-take/1.4.0:
+    dependencies:
+      callbag: 1.2.0
+    dev: true
+    resolution:
+      integrity: sha512-SMN236uYqjZ+8ypAY12qkV2QwutjOe96GyYPzUF9RKKJR5nRyu0fON4r4XBZ3ZonOWnDW05CWmKmS0mVQg5TIg==
+  /callbag/1.2.0:
+    dev: true
+    resolution:
+      integrity: sha512-RMcVOk2oyA8CyCt/HsLEvnvvttKlaGVaG0uOo5IY7RpdiPLhStjxv5oYre33VJfT8kJE+cuKLSNHooz7yCUdhQ==
   /camelcase/5.3.1:
     dev: true
     engines:
@@ -1023,6 +1169,16 @@ packages:
     hasBin: true
     resolution:
       integrity: sha512-9eWmWTdHLXh72rGrdZjNbG3aa1/3NRPpul1z0D979QpEnFdCG0Q5tv834N+94QEN2cysfV72YocQ3fn87s70fg==
+  /most/1.8.0_most@1.8.0:
+    dependencies:
+      '@most/multicast': 1.3.0_most@1.8.0
+      '@most/prelude': 1.7.3
+      symbol-observable: 1.2.0
+    dev: true
+    peerDependencies:
+      most: '*'
+    resolution:
+      integrity: sha512-V49VlfnnGBVSIcHVeW6jViOwsPwSdnw8qv2BQ97TCfJMA07Yq5BkjUnEPmDZ0Kqm6crTBlgmdnH+jO0qVJMXfw==
   /ms/2.1.1:
     dev: true
     resolution:
@@ -1232,6 +1388,10 @@ packages:
       node: '>=8'
     resolution:
       integrity: sha512-HRDzbaKjC+AOWVXxAU/x54COGeIv9eb+6CkDSQoNTt4XyWoIJvuPsXizxu/Fr23EiekbtZwmh1IcIG/l/a10GQ==
+  /platform/1.3.5:
+    dev: true
+    resolution:
+      integrity: sha512-TuvHS8AOIZNAlE77WUDiR4rySV/VMptyMfcfeoMgs4P8apaZM3JrnbzBiixKUv+XR6i+BXrQh8WAnjaSPFO65Q==
   /prettier/1.19.1:
     dev: true
     engines:
@@ -1305,6 +1465,14 @@ packages:
     hasBin: true
     resolution:
       integrity: sha512-dGQ+b9d1FOX/gluiggTAVnTvzQZUEkCi/TwZcax7ujugVRHs0nkYJlV9U4hsifGEMojnO+jvEML2CJQ6qXgbHA==
+  /rxjs/6.5.4:
+    dependencies:
+      tslib: 1.10.0
+    dev: true
+    engines:
+      npm: '>=2.0.0'
+    resolution:
+      integrity: sha512-naMQXcgEo3csAEGvw/NydRA0fuS2nDZJiw1YUWFKU7aPPAPGZEsD4Iimit96qwCieH6y614MCLYwdkrWx7z/7Q==
   /safe-buffer/5.1.2:
     dev: true
     resolution:
@@ -1488,6 +1656,12 @@ packages:
       node: '>=8'
     resolution:
       integrity: sha512-oRSIpR8pxT1Wr2FquTNnGet79b3BWljqOuoW/h4oBhxJ/HUbX5nX6JSruTkvXDCFMwDPvsaTTbvMLKZWSy0R5g==
+  /symbol-observable/1.2.0:
+    dev: true
+    engines:
+      node: '>=0.10.0'
+    resolution:
+      integrity: sha512-e900nM8RRtGhlV36KGEU9k65K3mPb1WV70OdjfxlG2EAuM1noi/E/BaW/uMhL7bPEssK8QV57vN3esixjUvcXQ==
   /test-exclude/6.0.0:
     dependencies:
       '@istanbuljs/schema': 0.1.2
@@ -1625,6 +1799,12 @@ packages:
     dev: true
     resolution:
       integrity: sha512-JPStrIyyVJ6oCSz/691fAjFtefZ6q+fP6tm+OS4Qw6o+TGQxNp1ziY2PgS+X/m0V8OWhZiO/m4xSj+Pr4RrZvw==
+  /xstream/11.11.0:
+    dependencies:
+      symbol-observable: 1.2.0
+    dev: true
+    resolution:
+      integrity: sha512-0zF3PLsHrmbToPBgX1jYZFNw+t5octSFJgVRH44HGlGBBjY7gscvDQOZvty8IQV15Snia1RcLPECWDfEaE4aXg==
   /y18n/4.0.0:
     dev: true
     resolution:
@@ -1692,14 +1872,30 @@ packages:
       node: '>=6'
     resolution:
       integrity: sha512-Ux4ygGWsu2c7isFWe8Yu1YluJmqVhxqK2cLXNQA5AcC3QfbGNpM7fu0Y8b/z16pXLnFxZYvWhd3fhBY9DLmC6Q==
+  github.com/bestiejs/benchmark.js/42f3b732bac3640eddb3ae5f50e445f3141016fd:
+    dependencies:
+      lodash: 4.17.15
+      platform: 1.3.5
+    dev: true
+    name: benchmark
+    resolution:
+      registry: 'https://registry.npmjs.org/'
+      tarball: 'https://codeload.github.com/bestiejs/benchmark.js/tar.gz/42f3b732bac3640eddb3ae5f50e445f3141016fd'
+    version: 2.1.4
 specifiers:
   '@types/assert': ^1.4.4
+  '@types/benchmark': ^1.0.31
   '@types/mocha': ^5.2.7
   assert: ^2.0.0
+  benchmark: 'github:bestiejs/benchmark.js#42f3b732bac3640eddb3ae5f50e445f3141016fd'
+  callbag-basics: ^3.2.0
   fast-check: ^1.21.0
   mocha: ^7.0.1
+  most: ^1.8.0
   nyc: ^15.0.0
   prettier: ^1.19.1
   rollup: ^1.29.1
+  rxjs: ^6.5.4
   ts-node: ^8.6.2
   typescript: ^3.7.5
+  xstream: ^11.11.0
