@@ -39,6 +39,9 @@ Currently, the following set of operators is implemented, others might follow. N
 - [`skip`](./src/skip.ts)
 - [`last`](./src/skip.ts)
 - [`flatten`](./src/flatten.ts)
+- [`sample`](./src/sample.ts)
+- [`sampleWith`](./src/sample.ts)
+- [`sampleCombine`](./src/sample.ts)
 
 ### Sinks
 
