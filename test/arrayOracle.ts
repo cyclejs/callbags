@@ -16,7 +16,9 @@ import {
   flatten,
   sampleWith,
   sampleCombine,
-  sample
+  sample,
+  makeSubject,
+  Source
 } from '../src/index';
 
 function oneOf<T>(...args: T[]): fc.Arbitrary<T> {
@@ -348,6 +350,35 @@ describe('using Array as oracle', () => {
           assert.deepStrictEqual(res, oracle);
         }
       )
+    );
+  });
+
+  it('makeSubject', () => {
+    fc.assert(
+      fc.property(fc.array(fc.integer(), 0, 100), arr => {
+        const subject = makeSubject<number>();
+
+        let completed = false;
+        let res: number[] = [];
+        pipe<number>(
+          subject,
+          subscribe({
+            next: data => res.push(data),
+            error: () => assert.fail('should not call error'),
+            complete: () => {
+              completed = true;
+            }
+          })
+        );
+
+        for (const x of arr) {
+          subject(1, x);
+        }
+        subject(2);
+
+        assert.strictEqual(completed, true);
+        assert.deepStrictEqual(res, arr);
+      })
     );
   });
 });
