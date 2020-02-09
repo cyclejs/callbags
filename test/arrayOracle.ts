@@ -5,6 +5,7 @@ import {
   filter,
   map,
   fromArray,
+  of,
   subscribe,
   pipe,
   scan,
@@ -12,7 +13,10 @@ import {
   first,
   last,
   skip,
-  flatten
+  flatten,
+  sampleWith,
+  sampleCombine,
+  sample
 } from '../src/index';
 
 function oneOf<T>(...args: T[]): fc.Arbitrary<T> {
@@ -260,6 +264,90 @@ describe('using Array as oracle', () => {
         assert.strictEqual(completed, true);
         assert.deepStrictEqual(result, oracle);
       })
+    );
+  });
+
+  it('sampleWith()', () => {
+    fc.assert(
+      fc.property(fc.array(fc.integer(), 0, 100), fc.integer(), (arr, n) => {
+        const oracle = arr.map(x => x + n);
+        let completed = false;
+
+        let res: number[] = [];
+        pipe(
+          fromArray(arr),
+          sampleWith((a, b: number) => a + b, of(n)), // TODO: Investigate
+          subscribe({
+            next: data => res.push(data),
+            error: () => assert.fail('should not call error'),
+            complete: () => {
+              completed = true;
+            }
+          })
+        );
+
+        assert.strictEqual(completed, true);
+        assert.deepStrictEqual(res, oracle);
+      })
+    );
+  });
+
+  it('sampleCombine()', () => {
+    fc.assert(
+      fc.property(fc.array(fc.integer(), 0, 100), arr => {
+        let completed = false;
+        let numData = 0;
+
+        let res: number[] = [];
+        pipe(
+          fromArray(arr.slice(0, 1)),
+          sampleCombine(...arr.slice(1).map(x => of(x))),
+          subscribe({
+            next: data => {
+              numData++;
+              res = data;
+            },
+            error: () => assert.fail('should not call error'),
+            complete: () => {
+              completed = true;
+            }
+          })
+        );
+
+        assert.strictEqual(completed, true);
+        assert.strictEqual(numData, arr.length > 1 ? 1 : 0);
+        assert.deepStrictEqual(res, arr.length > 1 ? arr : []);
+      })
+    );
+  });
+
+  it('sample()', () => {
+    fc.assert(
+      fc.property(
+        fc.array(fc.integer(), 0, 100),
+        fc.array(fc.integer()),
+        (arr, s) => {
+          const oracle =
+            arr.length === 0 ? [] : s.map(() => arr[arr.length - 1]);
+          let completed = false;
+
+          let res: number[] = [];
+          pipe(
+            fromArray(s),
+            sample(fromArray(arr)),
+            subscribe({
+              next: data => res.push(data),
+              error: () => assert.fail('should not call error'),
+              complete: () => {
+                completed = true;
+              }
+            })
+          );
+
+          assert.strictEqual(completed, true);
+          assert.deepStrictEqual(res, oracle);
+        }
+      )
     );
   });
 });

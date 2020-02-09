@@ -1,10 +1,10 @@
-import { Operator, Source } from './types';
+import { Operator, Source, ExtractContent } from './types';
 import { combine } from './combine';
 
-export function sampleCombine<T, U extends Source<any>[]>(
+export function sampleCombine<T, U extends [...Source<any>[]]>(
   ...sources: U
-): Operator<T, Prepend<T, U>> {
-  return sampleWith((...x) => x, combine(...sources));
+): Operator<T, Prepend<T, ExtractContent<U>>> {
+  return sampleWith((x, y: any) => [x, ...y], combine(...sources)); //TODO: Investigate
 }
 
 export function sample<T, U>(source: Source<U>): Operator<T, U> {
@@ -20,6 +20,7 @@ export function sampleWith<T, R, U>(
     let sampled: any;
     let sampleTalkback: any;
     let talkback: any;
+    let errored = false;
 
     sample(0, (t, d) => {
       if (t === 1) {
@@ -27,11 +28,14 @@ export function sampleWith<T, R, U>(
         sampled = d;
       } else if (t === 0) {
         sampleTalkback = d;
-      } else if (d) {
-        sink(t, d);
-        talkback(t, d);
       } else {
         sampleTalkback = void 0;
+
+        if (d) {
+          errored = true;
+          sink(t, d);
+          talkback?.(t, d);
+        }
       }
     });
 
@@ -40,7 +44,7 @@ export function sampleWith<T, R, U>(
         if (hasSampled) sink(1, f(d, sampled));
       } else if (t === 0) {
         talkback = d;
-      } else {
+      } else if (!errored) {
         sink(t, d);
         sampleTalkback?.(t, d);
       }
@@ -49,7 +53,8 @@ export function sampleWith<T, R, U>(
 }
 
 // Because typescript is stupid and [T, ...U] does not work (#26113)
-type Prepend<U, T extends any[]> = (
-  u: U,
-  ...rest: T
-) => any extends (...res: infer Result) => any ? Result : never;
+type Prepend<U, T extends [...any[]]> = ((u: U, ...rest: T) => any) extends (
+  ...res: infer X
+) => any
+  ? X
+  : never;

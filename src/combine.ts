@@ -1,8 +1,4 @@
-import { Source } from './types';
-
-export type ExtractContent<T extends [...Source<any>[]]> = {
-  [k in keyof T]: T[k] extends Source<infer U> ? U : never;
-};
+import { Source, ExtractContent } from './types';
 
 export function combineWith<T extends [...Source<any>[]], U>(
   f: (...args: ExtractContent<T>) => U,
