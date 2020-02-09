@@ -13,3 +13,7 @@ export type Sink<T> = (source: Source<T>) => void;
 export type Operator<A, B> = (source: Source<A>) => Callbag<B>;
 
 export type Factory<T> = (...args: Array<any>) => Callbag<T>;
+
+export type ExtractContent<T extends [...Source<any>[]]> = {
+  [k in keyof T]: T[k] extends Source<infer U> ? U : never;
+};

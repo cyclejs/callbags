@@ -8,6 +8,7 @@
     "build": "tsc -b tsconfig.build.json && pnpm run bundle:esm && pnpm run bundle:cjs",
     "bundle:esm": "rollup build/index.js --format esm --file build/bundle.esm.js",
     "bundle:cjs": "rollup build/index.js --format cjs --file build/bundle.cjs.js",
+    "format": "prettier --write './{src,test,perf}/**/*'",
     "test": "nyc --reporter text --reporter html pnpm run test:no_cover",
     "test:ci": "nyc --reporter text --reporter json pnpm run test:no_cover",
     "test:no_cover": "mocha --require ts-node/register 'test/*.ts'",
@@ -38,6 +39,7 @@
     "access": "public"
   },
   "prettier": {
-    "singleQuote": true
+    "singleQuote": true,
+    "tabWidth": 2
   }
 }
