@@ -27,6 +27,7 @@ Currently, the following set of operators is implemented, others might follow. N
 - [`merge`](./src/merge.ts)
 - [`combine`](./src/combine.ts)
 - [`combineWith`](./src/combine.ts)
+- [`makeSubject`](./src/subject.ts)
 
 ### Operators
 
