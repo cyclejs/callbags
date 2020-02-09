@@ -143,9 +143,7 @@ describe('fromPromise', () => {
       from(Promise.resolve(0)),
       unsubscribeEarly(t => t === 0),
       subscribe({
-        next: d => {
-          assert.fail();
-        },
+        next: () => assert.fail(),
         complete: done
       })
     );
