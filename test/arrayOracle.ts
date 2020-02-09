@@ -360,7 +360,7 @@ describe('using Array as oracle', () => {
 
         let completed = false;
         let res: number[] = [];
-        pipe<number>(
+        pipe(
           subject,
           subscribe({
             next: data => res.push(data),

@@ -1,14 +1,14 @@
 import * as assert from 'assert';
 import { unsubscribeEarly } from './helpers';
 
-import { pipe, makeSubject, subscribe, Source } from '../src/index';
+import { pipe, makeSubject, subscribe } from '../src/index';
 
 describe('makeSubject', () => {
   it('should allow sinks to unsubscribe', () => {
     const subject = makeSubject<number>();
 
     pipe(
-      subject as Source<number>,
+      subject,
       unsubscribeEarly(t => t === 0),
       subscribe({
         next: () => assert.fail('should not deliver data'),
