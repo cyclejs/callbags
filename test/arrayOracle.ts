@@ -276,7 +276,7 @@ describe('using Array as oracle', () => {
         let res: number[] = [];
         pipe(
           fromArray(arr),
-          sampleWith((a, b: number) => a + b, of(n)), // TODO: Investigate
+          sampleWith((a, b) => a + b, of<number>(n)),
           subscribe({
             next: data => res.push(data),
             error: () => assert.fail('should not call error'),

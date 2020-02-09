@@ -4,7 +4,7 @@ import { combine } from './combine';
 export function sampleCombine<T, U extends [...Source<any>[]]>(
   ...sources: U
 ): Operator<T, Prepend<T, ExtractContent<U>>> {
-  return sampleWith((x, y: any) => [x, ...y], combine(...sources)); //TODO: Investigate
+  return sampleWith((x, y) => [x, ...y], combine<U>(...sources));
 }
 
 export function sample<T, U>(source: Source<U>): Operator<T, U> {

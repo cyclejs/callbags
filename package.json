@@ -36,6 +36,7 @@
     "xstream": "^11.11.0"
   },
   "prettier": {
-    "singleQuote": true
+    "singleQuote": true,
+    "tabWidth": 2
   }
 }
