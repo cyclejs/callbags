@@ -1,9 +1,9 @@
 import { Callbag } from './types';
 
-export function makeSubject<T>(): Callbag<T> {
+export function makeSubject<T>(): Callbag<T, T> {
   let sinks: any[] = [];
 
-  return (type, data) => {
+  const subject: Callbag<T, T> = (type: 0 | 1 | 2, data: any) => {
     if (type === 0) {
       const sink = data;
       sinks.push(data);
@@ -24,4 +24,5 @@ export function makeSubject<T>(): Callbag<T> {
       }
     }
   };
+  return subject;
 }

@@ -7,7 +7,8 @@ import {
   of,
   fromPromise,
   subscribe,
-  throwError
+  throwError,
+  Source
 } from '../src/index';
 
 describe('flatten()', () => {
@@ -15,8 +16,8 @@ describe('flatten()', () => {
     let completed = false;
 
     pipe(
-      of([1, 2, 3, 4, 5].map(of)),
-      flatten(),
+      of(...[1, 2, 3, 4, 5].map(x => of(x))),
+      flatten,
       unsubscribeEarly(t => t === 0),
       subscribe({
         next: () => assert.fail('should not deliver data'),
@@ -34,7 +35,7 @@ describe('flatten()', () => {
     let numData = 0;
     pipe(
       of(fromPromise(Promise.resolve(0))),
-      flatten(),
+      flatten,
       subscribe({
         next: data => {
           assert.strictEqual(data, 0);
@@ -54,7 +55,7 @@ describe('flatten()', () => {
 
     pipe(
       of(throwError('myError')),
-      flatten(),
+      flatten,
       subscribe({
         next: () => assert.fail('should not deliver data'),
         error: err => {
@@ -72,8 +73,8 @@ describe('flatten()', () => {
     let numError = 0;
 
     pipe(
-      throwError('myError'),
-      flatten(),
+      throwError<never>('myError'),
+      flatten,
       subscribe({
         next: () => assert.fail('should not deliver data'),
         error: err => {
@@ -90,7 +91,7 @@ describe('flatten()', () => {
     let numData = 0;
     pipe(
       of(fromPromise(Promise.resolve(0)), of(1)),
-      flatten(),
+      flatten,
       subscribe({
         next: data => {
           assert.strictEqual(data, 1);
@@ -106,7 +107,7 @@ describe('flatten()', () => {
   });
 
   it('should complete inner stream when outer errors', done => {
-    const testSource = (_: number, sink: any) => {
+    const testSource: Source<Source<number>> = (_: number, sink: any) => {
       sink(0, () => {});
       sink(1, fromPromise(Promise.resolve(0)));
       sink(2, 'myError');
@@ -114,7 +115,7 @@ describe('flatten()', () => {
 
     pipe(
       testSource,
-      flatten(),
+      flatten,
       subscribe({
         next: () => assert.fail('should not deliver data'),
         error: err => {

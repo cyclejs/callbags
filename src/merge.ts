@@ -1,14 +1,14 @@
-import { Source, END } from './types';
+import { Source, Callbag } from './types';
 
 export function merge<T>(...sources: Source<T>[]): Source<T> {
   return (_, sink) => {
     const n = sources.length;
     let ended = false;
-    let sourceTalkbacks = new Array(n);
+    let sourceTalkbacks: Array<Callbag<void, void> | undefined> = new Array(n);
     let startCount = 0;
     let endCount = 0;
 
-    const talkback = (_: END, d: any) => {
+    const talkback: Callbag<void, void> = (_: any, d: any) => {
       ended = true;
       for (let i = 0; i < n; i++) {
         sourceTalkbacks[i]?.(2, d);
@@ -18,7 +18,7 @@ export function merge<T>(...sources: Source<T>[]): Source<T> {
     for (let i = 0; i < sources.length; i++) {
       if (ended) return;
 
-      sources[i](0, (t, d) => {
+      sources[i](0, (t: any, d: any) => {
         if (t === 0) {
           sourceTalkbacks[i] = d;
           if (++startCount === 1) sink(0, talkback);

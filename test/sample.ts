@@ -8,7 +8,6 @@ import {
   throwError,
   sampleCombine,
   sample,
-  sampleWith
 } from '../src/index';
 
 describe('sample', () => {
