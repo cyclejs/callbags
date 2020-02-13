@@ -4,6 +4,7 @@
   "description": "",
   "main": "build/bundle.cjs.js",
   "module": "build/bundle.esm.js",
+  "typings": "build/index.d.ts",
   "scripts": {
     "build": "tsc -b tsconfig.build.json && pnpm run bundle:esm && pnpm run bundle:cjs",
     "bundle:esm": "rollup build/index.js --format esm --file build/bundle.esm.js",
