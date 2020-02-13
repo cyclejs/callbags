@@ -22,16 +22,16 @@ describe('combine()', () => {
 
         pipe(
           combine(...arr.map(x => of(x))),
-          subscribe({
-            next: data => {
+          subscribe(
+            data => {
               result = data;
               numData++;
             },
-            error: () => assert.fail('should not call error'),
-            complete: () => {
-              completed = true;
+            err => {
+              if (err) assert.fail('should not call error');
+              else completed = true;
             }
-          })
+          )
         );
 
         assert.strictEqual(completed, true);
@@ -46,13 +46,13 @@ describe('combine()', () => {
     pipe(
       combineWith((x, y) => x + y, of(1), of(2)),
       unsubscribeEarly(t => t === 0),
-      subscribe({
-        next: () => assert.fail('should not deliver data'),
-        error: () => assert.fail('should not call error'),
-        complete: () => {
-          completed = true;
+      subscribe(
+        () => assert.fail('should not deliver data'),
+        err => {
+          if (err) assert.fail('should not call error');
+          else completed = true;
         }
-      })
+      )
     );
 
     assert.strictEqual(completed, true);
@@ -67,14 +67,17 @@ describe('combine()', () => {
         throwError<number>('myError'),
         of(2)
       ),
-      subscribe({
-        next: () => assert.fail('should not deliver data'),
-        error: err => {
-          assert.strictEqual(err, 'myError');
-          numError++;
-        },
-        complete: () => assert.fail('should not complete')
-      })
+      subscribe(
+        () => assert.fail('should not deliver data'),
+        err => {
+          if (err) {
+            assert.strictEqual(err, 'myError');
+            numError++;
+          } else {
+            assert.fail('should not terminate');
+          }
+        }
+      )
     );
 
     assert.strictEqual(numError, 1);
@@ -84,14 +87,17 @@ describe('combine()', () => {
     let numError = 0;
     pipe(
       combine(fromPromise(Promise.resolve(1)), throwError('myError')),
-      subscribe({
-        next: () => assert.fail('should not deliver data'),
-        error: err => {
-          assert.strictEqual(err, 'myError');
-          numError++;
-        },
-        complete: () => assert.fail('should not complete')
-      })
+      subscribe(
+        () => assert.fail('should not deliver data'),
+        err => {
+          if (err) {
+            assert.strictEqual(err, 'myError');
+            numError++;
+          } else {
+            assert.fail('should not terminate');
+          }
+        }
+      )
     );
 
     assert.strictEqual(numError, 1);

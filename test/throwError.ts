@@ -1,11 +1,6 @@
 import * as assert from 'assert';
 
-import {
-  pipe,
-  take,
-  throwError,
-  subscribe
-} from '../src/index';
+import { pipe, take, throwError, subscribe } from '../src/index';
 
 describe('throwError', () => {
   it('should give a talkback when subscribed', () => {
@@ -14,10 +9,8 @@ describe('throwError', () => {
     pipe(
       throwError(new Error('foo')),
       take(0),
-      subscribe({
-        next: () => {
-          taken++;
-        }
+      subscribe(() => {
+        taken++;
       })
     );
 

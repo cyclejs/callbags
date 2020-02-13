@@ -21,9 +21,7 @@ describe('merge', () => {
         let result: any[] = [];
         pipe(
           merge(...arr.map(fromArray)),
-          subscribe({
-            next: x => result.push(x)
-          })
+          subscribe(x => result.push(x))
         );
 
         assert.deepStrictEqual(oracle, result);
@@ -37,13 +35,13 @@ describe('merge', () => {
     pipe(
       merge(of(1), of(2), of(3)),
       unsubscribeEarly(t => t === 0),
-      subscribe({
-        next: () => assert.fail('should not receive data'),
-        error: () => assert.fail('should not error'),
-        complete: () => {
-          completed = true;
+      subscribe(
+        () => assert.fail('should not receive data'),
+        e => {
+          if (e) assert.fail('should not terminate with error');
+          else completed = true;
         }
-      })
+      )
     );
 
     assert.strictEqual(completed, true);
@@ -67,15 +65,18 @@ describe('merge', () => {
         testSource,
         testSource
       ),
-      subscribe({
-        next: () => assert.fail('should not receive data'),
-        error: err => {
-          assert.strictEqual(err, 'someError');
-          assert.strictEqual(numCompleted, 3);
-          done();
-        },
-        complete: () => assert.fail('should not complete')
-      })
+      subscribe(
+        () => assert.fail('should not receive data'),
+        err => {
+          if (err) {
+            assert.strictEqual(err, 'someError');
+            assert.strictEqual(numCompleted, 3);
+            done();
+          } else {
+            assert.fail('should not terminate');
+          }
+        }
+      )
     );
   });
 
@@ -93,14 +94,17 @@ describe('merge', () => {
         testSource,
         testSource
       ),
-      subscribe({
-        next: () => assert.fail('should not receive data'),
-        error: err => {
-          assert.strictEqual(err, 'someError');
-          done();
-        },
-        complete: () => assert.fail('should not complete')
-      })
+      subscribe(
+        () => assert.fail('should not receive data'),
+        err => {
+          if (err) {
+            assert.strictEqual(err, 'someError');
+            done();
+          } else {
+            assert.fail('should not terminate');
+          }
+        }
+      )
     );
   });
 });

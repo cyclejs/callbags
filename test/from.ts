@@ -18,10 +18,8 @@ describe('fromArray', () => {
     pipe(
       fromArray([1, 2, 3, 4, 5, 6, 7, 8]),
       take(2),
-      subscribe({
-        next: () => {
-          taken++;
-        }
+      subscribe(() => {
+        taken++;
       })
     );
 
@@ -33,10 +31,8 @@ describe('fromArray', () => {
 
     pipe(
       from([1, 2, 3, 4, 5]),
-      subscribe({
-        next: () => {
-          data++;
-        }
+      subscribe(() => {
+        data++;
       })
     );
 
@@ -54,17 +50,19 @@ describe('fromPromise', () => {
         await new Promise(resolve => {
           pipe(
             fromPromise(Promise.resolve(x)),
-            subscribe({
-              next: d => {
+            subscribe(
+              d => {
                 assert.strictEqual(d, x);
                 data++;
               },
-              complete: () => {
-                completed++;
-                resolve();
-              },
-              error: e => assert.fail(e)
-            })
+              e => {
+                if (e) assert.fail(e);
+                else {
+                  completed++;
+                  resolve();
+                }
+              }
+            )
           );
         }).then(() => {
           assert.strictEqual(completed, 1);
@@ -77,26 +75,26 @@ describe('fromPromise', () => {
   it('should be called by from()', done => {
     pipe(
       from(Promise.resolve(0)),
-      subscribe({
-        next: x => {
-          assert.strictEqual(x, 0);
-        },
-        complete: done
-      })
+      subscribe(x => {
+        assert.strictEqual(x, 0);
+      }, done)
     );
   });
 
   it('should handle errors', done => {
     pipe(
       from(Promise.reject('someError')),
-      subscribe({
-        next: () => assert.fail('next was called'),
-        error: err => {
-          assert.strictEqual(err, 'someError');
-          done();
-        },
-        complete: () => assert.fail('complete was called')
-      })
+      subscribe(
+        () => assert.fail('next was called'),
+        err => {
+          if (err) {
+            assert.strictEqual(err, 'someError');
+            done();
+          } else {
+            assert.fail('should not terminate');
+          }
+        }
+      )
     );
   });
 
@@ -104,24 +102,26 @@ describe('fromPromise', () => {
     pipe(
       from(Promise.reject('someError')),
       unsubscribeEarly(t => t === 0),
-      subscribe({
-        next: () => assert.fail('next was called'),
-        error: () => assert.fail('error was called'),
-        complete: done
-      })
+      subscribe(
+        () => assert.fail('next was called'),
+        e => {
+          if (e) assert.fail('error was called');
+          else done();
+        }
+      )
     );
   });
 
   it('should handle rejection without error', done => {
     pipe(
       from(Promise.reject()),
-      subscribe({
-        next: () => assert.fail('next was called'),
-        error: err => {
+      subscribe(
+        () => assert.fail('next was called'),
+        err => {
           assert.strictEqual(err.message, '');
           done();
         }
-      })
+      )
     );
   });
 
@@ -129,11 +129,9 @@ describe('fromPromise', () => {
     pipe(
       from(Promise.resolve(0)),
       unsubscribeEarly(t => t === 1),
-      subscribe({
-        next: d => {
-          assert.strictEqual(d, 0);
-          done();
-        }
+      subscribe(d => {
+        assert.strictEqual(d, 0);
+        done();
       })
     );
   });
@@ -142,10 +140,7 @@ describe('fromPromise', () => {
     pipe(
       from(Promise.resolve(0)),
       unsubscribeEarly(t => t === 0),
-      subscribe({
-        next: () => assert.fail(),
-        complete: done
-      })
+      subscribe(() => assert.fail(), done)
     );
   });
 });
