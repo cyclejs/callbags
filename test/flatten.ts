@@ -7,6 +7,7 @@ import {
   of,
   fromPromise,
   subscribe,
+  fromArray,
   throwError
 } from '../src/index';
 
@@ -15,7 +16,7 @@ describe('flatten', () => {
     let completed = false;
 
     pipe(
-      of(...[1, 2, 3, 4, 5].map(x => of(x))),
+      fromArray([1, 2, 3, 4, 5].map(of)),
       flatten,
       unsubscribeEarly(t => t === 0),
       subscribe({
@@ -89,7 +90,7 @@ describe('flatten', () => {
   it('should complete unfinished inner stream when new inner stream is received', done => {
     let numData = 0;
     pipe(
-      of(fromPromise(Promise.resolve(0)), of(1)),
+      fromArray([fromPromise(Promise.resolve(0)), of(1)]),
       flatten,
       subscribe({
         next: data => {
