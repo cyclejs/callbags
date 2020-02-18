@@ -1,10 +1,10 @@
-import { Source } from './types';
+import { Source, END } from './types';
 
 export function fromArray<T>(arr: Array<T>): Source<T> {
   return (_, sink) => {
     let ended = false;
 
-    sink(0, (_: any) => {
+    sink(0, (_: END) => {
       ended = true;
     });
 
@@ -34,7 +34,7 @@ export function fromPromise<T>(p: Promise<T>): Source<T> {
 
     p.then(resolve, reject);
 
-    sink(0, (_: any) => {
+    sink(0, (_: END) => {
       ended = true;
     });
   };

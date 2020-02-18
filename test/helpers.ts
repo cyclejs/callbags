@@ -5,7 +5,7 @@ export function unsubscribeEarly<T>(
 ): Operator<T, T> {
   return source => (_, sink) => {
     let talkback: any;
-    source(0, (t: any, d: any) => {
+    source(0, (t, d) => {
       if (t === 0) talkback = d;
       if (when(t)) {
         talkback(2);

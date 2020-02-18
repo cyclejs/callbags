@@ -1,16 +1,16 @@
-import { Callbag, Source, ALL } from './types';
+import { Source, Talkback, END, ALL } from './types';
 
 export function flatten<T>(source: Source<Source<T>>): Source<T> {
   return (_, sink) => {
-    let outerTalkback: Callbag<void, void>;
-    let innerTalkback: Callbag<void, void> | undefined;
+    let outerTalkback: Talkback;
+    let innerTalkback: Talkback | undefined;
     let outerEnded = false;
 
-    const talkback: Callbag<void, void> = (_: 0 | 1 | 2) => {
+    const talkback = (_: END) => {
       outerTalkback(2);
     };
 
-    source(0, (t: 0 | 1 | 2, d: any) => {
+    source(0, (t, d) => {
       if (t === 0) {
         outerTalkback = d;
         sink(0, talkback);

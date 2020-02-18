@@ -7,11 +7,10 @@ import {
   of,
   fromPromise,
   subscribe,
-  throwError,
-  Source
+  throwError
 } from '../src/index';
 
-describe('flatten()', () => {
+describe('flatten', () => {
   it('should allow to unsubscribe before delivering data', () => {
     let completed = false;
 
@@ -73,7 +72,7 @@ describe('flatten()', () => {
     let numError = 0;
 
     pipe(
-      throwError<never>('myError'),
+      throwError('myError'),
       flatten,
       subscribe({
         next: () => assert.fail('should not deliver data'),
@@ -107,7 +106,7 @@ describe('flatten()', () => {
   });
 
   it('should complete inner stream when outer errors', done => {
-    const testSource: Source<Source<number>> = (_: number, sink: any) => {
+    const testSource = (_: number, sink: any) => {
       sink(0, () => {});
       sink(1, fromPromise(Promise.resolve(0)));
       sink(2, 'myError');

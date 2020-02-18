@@ -1,11 +1,11 @@
-import { Operator, Callbag } from './types';
+import { Operator } from './types';
 
 export function take<T>(n: number): Operator<T, T> {
   return source => (_, sink) => {
-    let talkback: Callbag<void, void>;
+    let talkback: any;
     let taken = 0;
 
-    source(0, (t: 0 | 1 | 2, d: any) => {
+    source(0, (t, d) => {
       if (t === 0) talkback = d;
       else if (t === 1) {
         sink(1, d);

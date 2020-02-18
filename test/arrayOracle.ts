@@ -279,7 +279,7 @@ describe('using Array as oracle', () => {
         pipe(
           fromArray(arr),
           sampleWith((a, b) => a + b, of<number>(n)),
-          subscribe<number>({
+          subscribe({
             next: data => res.push(data),
             error: () => assert.fail('should not call error'),
             complete: () => {
@@ -304,7 +304,7 @@ describe('using Array as oracle', () => {
         pipe(
           fromArray(arr.slice(0, 1)),
           sampleCombine(...arr.slice(1).map(x => of(x))),
-          subscribe<[number, number]>({
+          subscribe({
             next: data => {
               numData++;
               res = data;
@@ -337,7 +337,7 @@ describe('using Array as oracle', () => {
           pipe(
             fromArray(s),
             sample(fromArray(arr)),
-            subscribe<number>({
+            subscribe({
               next: data => res.push(data),
               error: () => assert.fail('should not call error'),
               complete: () => {
@@ -362,7 +362,7 @@ describe('using Array as oracle', () => {
         let res: number[] = [];
         pipe(
           subject,
-          subscribe<number>({
+          subscribe({
             next: data => res.push(data),
             error: () => assert.fail('should not call error'),
             complete: () => {

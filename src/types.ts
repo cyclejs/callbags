@@ -4,18 +4,20 @@ export type END = 2;
 
 export type ALL = START | DATA | END;
 
-export type Callbag<I, O> = {
-  (t: START, d: Callbag<O, void>): void;
-  (t: DATA, d: I): void;
+export type Callbag<T> = {
+  (t: START, d: Talkback): void;
+  (t: DATA, d: T): void;
   (t: END, d?: any): void;
   (t: any, d: any): void;
 };
 
-export type Source<T> = (t: START, d: Callbag<T, void>) => void;
+export type Talkback = (type: ALL, payload?: any) => void;
+
+export type Source<T> = (t: START, sink: Talkback) => void;
 
 export type Dispose = () => void;
 
-export type Consumer<T> = (source: Source<T>) => Dispose | void;
+export type Sink<T> = (source: Source<T>) => Dispose | void;
 
 export type Operator<A, B> = (source: Source<A>) => Source<B>;
 

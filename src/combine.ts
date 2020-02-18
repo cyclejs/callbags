@@ -1,4 +1,4 @@
-import { Callbag as CB, Source, ExtractContent } from './types';
+import { Source, ExtractContent, Talkback } from './types';
 
 export function combineWith<T extends [...Source<any>[]], U>(
   f: (...args: ExtractContent<T>) => U,
@@ -7,7 +7,7 @@ export function combineWith<T extends [...Source<any>[]], U>(
   return (_, sink) => {
     const n = sources.length;
     let combined: any[] = Array(n).fill(undefined);
-    let talkbacks: Array<CB<void, void> | undefined> = Array(n).fill(undefined);
+    let talkbacks: Array<Talkback | undefined> = Array(n).fill(undefined);
     let numEnded = 0;
     let numStarted = 0;
     let ended = false;
@@ -22,7 +22,7 @@ export function combineWith<T extends [...Source<any>[]], U>(
     for (let i = 0; i < n; i++) {
       if (ended) return;
 
-      sources[i](0, (t: 0 | 1 | 2, d: any) => {
+      sources[i](0, (t, d) => {
         if (t === 0) {
           talkbacks[i] = d;
           if (++numStarted === 1) sink(0, talkback);

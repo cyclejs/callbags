@@ -22,7 +22,7 @@ export function sampleWith<T, R, U>(
     let talkback: any;
     let errored = false;
 
-    sample(0, (t: any, d: any) => {
+    sample(0, (t, d) => {
       if (t === 1) {
         hasSampled = true;
         sampled = d;
@@ -39,7 +39,7 @@ export function sampleWith<T, R, U>(
       }
     });
 
-    source(0, (t: any, d: any) => {
+    source(0, (t, d) => {
       if (t === 1) {
         if (hasSampled) sink(1, f(d, sampled));
       } else if (t === 0) {
