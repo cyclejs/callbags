@@ -7,8 +7,7 @@ import {
   fromPromise,
   throwError,
   sampleCombine,
-  sample,
-  sampleWith
+  sample
 } from '../src/index';
 
 describe('sample', () => {

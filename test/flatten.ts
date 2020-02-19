@@ -7,16 +7,17 @@ import {
   of,
   fromPromise,
   subscribe,
+  fromArray,
   throwError
 } from '../src/index';
 
-describe('flatten()', () => {
+describe('flatten', () => {
   it('should allow to unsubscribe before delivering data', () => {
     let completed = false;
 
     pipe(
-      of([1, 2, 3, 4, 5].map(of)),
-      flatten(),
+      fromArray([1, 2, 3, 4, 5].map(of)),
+      flatten,
       unsubscribeEarly(t => t === 0),
       subscribe({
         next: () => assert.fail('should not deliver data'),
@@ -34,7 +35,7 @@ describe('flatten()', () => {
     let numData = 0;
     pipe(
       of(fromPromise(Promise.resolve(0))),
-      flatten(),
+      flatten,
       subscribe({
         next: data => {
           assert.strictEqual(data, 0);
@@ -54,7 +55,7 @@ describe('flatten()', () => {
 
     pipe(
       of(throwError('myError')),
-      flatten(),
+      flatten,
       subscribe({
         next: () => assert.fail('should not deliver data'),
         error: err => {
@@ -73,7 +74,7 @@ describe('flatten()', () => {
 
     pipe(
       throwError('myError'),
-      flatten(),
+      flatten,
       subscribe({
         next: () => assert.fail('should not deliver data'),
         error: err => {
@@ -89,8 +90,8 @@ describe('flatten()', () => {
   it('should complete unfinished inner stream when new inner stream is received', done => {
     let numData = 0;
     pipe(
-      of(fromPromise(Promise.resolve(0)), of(1)),
-      flatten(),
+      fromArray([fromPromise(Promise.resolve(0)), of(1)]),
+      flatten,
       subscribe({
         next: data => {
           assert.strictEqual(data, 1);
@@ -114,7 +115,7 @@ describe('flatten()', () => {
 
     pipe(
       testSource,
-      flatten(),
+      flatten,
       subscribe({
         next: () => assert.fail('should not deliver data'),
         error: err => {

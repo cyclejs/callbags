@@ -48,6 +48,16 @@ export function from<T>(p: Promise<T> | Array<T>): Source<T> {
   }
 }
 
-export function of<T>(...args: Array<T>): Source<T> {
-  return fromArray(args);
+export function of<T>(x: T): Source<T> {
+  return (_, sink) => {
+    let ended = false;
+
+    sink(0, (_: END) => {
+      ended = true;
+    });
+
+    if (ended) return;
+    sink(1, x);
+    if (!ended) sink(2);
+  };
 }

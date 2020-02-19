@@ -1,4 +1,4 @@
-import { Source, ExtractContent } from './types';
+import { Source, ExtractContent, Talkback } from './types';
 
 export function combineWith<T extends [...Source<any>[]], U>(
   f: (...args: ExtractContent<T>) => U,
@@ -7,7 +7,7 @@ export function combineWith<T extends [...Source<any>[]], U>(
   return (_, sink) => {
     const n = sources.length;
     let combined: any[] = Array(n).fill(undefined);
-    let talkbacks: any[] = Array(n).fill(undefined);
+    let talkbacks: Array<Talkback | undefined> = Array(n).fill(undefined);
     let numEnded = 0;
     let numStarted = 0;
     let ended = false;

@@ -1,9 +1,9 @@
-import { Callbag } from './types';
+import { Callbag, ALL } from './types';
 
 export function makeSubject<T>(): Callbag<T> {
   let sinks: any[] = [];
 
-  return (type, data) => {
+  return (type: ALL, data: any) => {
     if (type === 0) {
       const sink = data;
       sinks.push(data);

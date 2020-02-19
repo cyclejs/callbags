@@ -253,7 +253,7 @@ describe('using Array as oracle', () => {
         let result: any[] = [];
         pipe(
           fromArray(arr.map(fromArray)),
-          flatten(),
+          flatten,
           subscribe({
             next: data => result.push(data),
             error: () => assert.fail('should not call error'),
