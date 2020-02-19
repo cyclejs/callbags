@@ -18,10 +18,8 @@ describe('startWith', () => {
         pipe(
           fromArray(arr),
           startWith(x),
-          subscribe({
-            next: data => {
-              result.push(data);
-            }
+          subscribe(data => {
+            result.push(data);
           })
         );
 
@@ -35,19 +33,17 @@ describe('startWith', () => {
       fc.asyncProperty(fc.anything(), fc.anything(), async (x, y) => {
         let result: any[] = [];
 
-        await new Promise((resolve: any) =>
+        const z = await new Promise((resolve: any) =>
           pipe(
             fromPromise(Promise.resolve(x)),
             startWith(y),
-            subscribe({
-              next: data => {
-                result.push(data);
-              },
-              complete: resolve
-            })
+            subscribe(data => {
+              result.push(data);
+            }, resolve)
           )
         );
 
+        assert.strictEqual(typeof z, 'undefined');
         assert.deepStrictEqual(result, [y, x]);
       })
     );

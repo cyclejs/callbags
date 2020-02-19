@@ -81,9 +81,16 @@ export function runXStream(stream: () => Stream<any>): (fn: any) => void {
 }
 
 export function runCallbags(source: () => Source<any>): (fn: any) => void {
-  return f => {
+  return deferred => {
     try {
-      subscribe(mkObserver(f))(source());
+      subscribe(noop, (e: any) => {
+        if (e) {
+          deferred.benchmark.emit({ type: 'error', error: e });
+          deferred.resolve(e);
+        } else {
+          deferred.resolve();
+        }
+      })(source());
     } catch (e) {
       console.error(e);
     }

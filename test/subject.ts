@@ -10,10 +10,12 @@ describe('makeSubject', () => {
     pipe(
       subject,
       unsubscribeEarly(t => t === 0),
-      subscribe({
-        next: () => assert.fail('should not deliver data'),
-        error: () => assert.fail('should not call error')
-      })
+      subscribe(
+        () => assert.fail('should not deliver data'),
+        e => {
+          if (e) assert.fail('should not terminate with error');
+        }
+      )
     );
 
     for (const x of [1, 2, 3, 4, 5]) {

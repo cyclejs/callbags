@@ -15,14 +15,14 @@ export { flatten } from './flatten';
 export { sample, sampleWith, sampleCombine } from './sample';
 
 // Sinks
-export { subscribe, Observer } from './subscribe';
+export { subscribe } from './subscribe';
 
 // Helpers
 export { pipe } from './pipe';
 
 // Types
 export {
-  Sink,
+  Consumer,
   Source,
   Callbag,
   Operator,

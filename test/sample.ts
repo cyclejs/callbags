@@ -16,13 +16,17 @@ describe('sample', () => {
     pipe(
       of(1),
       sampleCombine(of(2), of(3), throwError('myError')),
-      subscribe({
-        next: () => assert.fail('should not deliver data'),
-        error: err => {
-          assert.strictEqual(err, 'myError'), numError++;
-        },
-        complete: () => assert.fail('should not complete')
-      })
+      subscribe(
+        () => assert.fail('should not deliver data'),
+        err => {
+          if (err) {
+            assert.strictEqual(err, 'myError');
+            numError++;
+          } else {
+            assert.fail('should not terminate');
+          }
+        }
+      )
     );
 
     assert.strictEqual(numError, 1);
@@ -32,11 +36,13 @@ describe('sample', () => {
     pipe(
       of(0),
       sample(fromPromise(Promise.resolve(1))),
-      subscribe({
-        next: () => assert.fail('should not deliver data'),
-        error: () => assert.fail('should not call error'),
-        complete: done
-      })
+      subscribe(
+        () => assert.fail('should not deliver data'),
+        e => {
+          if (e) assert.fail('should not call error');
+          else done();
+        }
+      )
     );
   });
 
@@ -44,14 +50,17 @@ describe('sample', () => {
     pipe(
       fromPromise(Promise.resolve(0)),
       sample(fromPromise(Promise.reject('myError'))),
-      subscribe({
-        next: () => assert.fail('should not deliver data'),
-        error: err => {
-          assert.strictEqual(err, 'myError');
-          done();
-        },
-        complete: () => assert.fail('should not complete')
-      })
+      subscribe(
+        () => assert.fail('should not deliver data'),
+        err => {
+          if (err) {
+            assert.strictEqual(err, 'myError');
+            done();
+          } else {
+            assert.fail('should not terminate');
+          }
+        }
+      )
     );
   });
 });

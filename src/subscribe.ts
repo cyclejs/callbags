@@ -1,19 +1,23 @@
-import { Sink } from './types';
+import { Consumer, Talkback } from './types';
 
-export type Observer<T> = {
-  next: (data: T) => void;
-  error?: (err: any) => void;
-  complete?: () => void;
-};
-
-export function subscribe<T>(o: Observer<T>): Sink<T> {
+export function subscribe<T>(
+  onData: (t: T) => void,
+  onEnd?: (e?: any) => void
+): Consumer<T> {
   return source => {
-    source(0, (t, d) => {
-      if (t === 1) o.next(d);
-      if (t === 2) {
-        if (d === undefined) o.complete?.();
-        else o.error?.(d);
+    let talkback: Talkback | undefined;
+    let disposeLater = false;
+    source(0, (t: any, d: any) => {
+      if (t === 0) {
+        talkback = d as Talkback;
+        if (disposeLater) talkback(2);
       }
+      if (t === 1) onData(d);
+      if (t === 2) onEnd?.(d);
     });
+    return () => {
+      if (talkback) talkback(2);
+      else disposeLater = true;
+    };
   };
 }

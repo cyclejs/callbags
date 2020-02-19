@@ -17,7 +17,7 @@ export type Source<T> = (t: START, sink: Talkback) => void;
 
 export type Dispose = () => void;
 
-export type Sink<T> = (source: Source<T>) => Dispose | void;
+export type Consumer<T> = (source: Source<T>) => Dispose;
 
 export type Operator<A, B> = (source: Source<A>) => Source<B>;
 

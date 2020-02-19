@@ -42,13 +42,14 @@ describe('using Array as oracle', () => {
         pipe(
           fromArray(arr),
           sut(f),
-          subscribe({
-            next: x => res.push(x),
-            complete: () => {
+          subscribe(
+            x => res.push(x),
+            e => {
+              if (e) assert.fail(e);
               assert.deepStrictEqual(res, oracle);
               completed++;
             }
-          })
+          )
         );
 
         assert.strictEqual(completed, 1);
@@ -92,13 +93,13 @@ describe('using Array as oracle', () => {
           pipe(
             fromArray(arr),
             scan(f, x),
-            subscribe({
-              next: data => res.push(data),
-              error: () => assert.fail('should not call error'),
-              complete: () => {
-                completed = true;
+            subscribe(
+              data => res.push(data),
+              err => {
+                if (err) assert.fail('should not terminate with error');
+                else completed = true;
               }
-            })
+            )
           );
 
           assert.strictEqual(completed, true);
@@ -129,13 +130,13 @@ describe('using Array as oracle', () => {
         pipe(
           fromArray(arr),
           scan(f),
-          subscribe({
-            next: data => res.push(data),
-            error: () => assert.fail('should not call error'),
-            complete: () => {
-              completed = true;
+          subscribe(
+            data => res.push(data),
+            err => {
+              if (err) assert.fail('should not terminate with error');
+              else completed = true;
             }
-          })
+          )
         );
 
         assert.strictEqual(completed, true);
@@ -154,13 +155,13 @@ describe('using Array as oracle', () => {
         pipe(
           fromArray(arr),
           take(n),
-          subscribe({
-            next: data => res.push(data),
-            error: () => assert.fail('should not call error'),
-            complete: () => {
-              completed = true;
+          subscribe(
+            data => res.push(data),
+            err => {
+              if (err) assert.fail('should not terminate with error');
+              else completed = true;
             }
-          })
+          )
         );
 
         assert.strictEqual(completed, true);
@@ -179,13 +180,13 @@ describe('using Array as oracle', () => {
         pipe(
           fromArray(arr),
           first(),
-          subscribe({
-            next: data => res.push(data),
-            error: () => assert.fail('should not call error'),
-            complete: () => {
-              completed = true;
+          subscribe(
+            data => res.push(data),
+            err => {
+              if (err) assert.fail('should not terminate with error');
+              else completed = true;
             }
-          })
+          )
         );
 
         assert.strictEqual(completed, true);
@@ -204,13 +205,13 @@ describe('using Array as oracle', () => {
         pipe(
           fromArray(arr),
           skip(n),
-          subscribe({
-            next: data => res.push(data),
-            error: () => assert.fail('should not call error'),
-            complete: () => {
-              completed = true;
+          subscribe(
+            data => res.push(data),
+            err => {
+              if (err) assert.fail('should not terminate with error');
+              else completed = true;
             }
-          })
+          )
         );
 
         assert.strictEqual(completed, true);
@@ -229,13 +230,13 @@ describe('using Array as oracle', () => {
         pipe(
           fromArray(arr),
           last(),
-          subscribe({
-            next: data => res.push(data),
-            error: () => assert.fail('should not call error'),
-            complete: () => {
-              completed = true;
+          subscribe(
+            data => res.push(data),
+            err => {
+              if (err) assert.fail('should not terminate with error');
+              else completed = true;
             }
-          })
+          )
         );
 
         assert.strictEqual(completed, true);
@@ -254,13 +255,13 @@ describe('using Array as oracle', () => {
         pipe(
           fromArray(arr.map(fromArray)),
           flatten,
-          subscribe({
-            next: data => result.push(data),
-            error: () => assert.fail('should not call error'),
-            complete: () => {
-              completed = true;
+          subscribe(
+            data => result.push(data),
+            err => {
+              if (err) assert.fail('should not terminate with error');
+              else completed = true;
             }
-          })
+          )
         );
 
         assert.strictEqual(completed, true);
@@ -279,13 +280,13 @@ describe('using Array as oracle', () => {
         pipe(
           fromArray(arr),
           sampleWith((a, b) => a + b, of<number>(n)),
-          subscribe({
-            next: data => res.push(data),
-            error: () => assert.fail('should not call error'),
-            complete: () => {
-              completed = true;
+          subscribe(
+            data => res.push(data),
+            err => {
+              if (err) assert.fail('should not terminate with error');
+              else completed = true;
             }
-          })
+          )
         );
 
         assert.strictEqual(completed, true);
@@ -304,16 +305,16 @@ describe('using Array as oracle', () => {
         pipe(
           fromArray(arr.slice(0, 1)),
           sampleCombine(...arr.slice(1).map(x => of(x))),
-          subscribe({
-            next: data => {
+          subscribe(
+            data => {
               numData++;
               res = data;
             },
-            error: () => assert.fail('should not call error'),
-            complete: () => {
-              completed = true;
+            err => {
+              if (err) assert.fail('should not terminate with error');
+              else completed = true;
             }
-          })
+          )
         );
 
         assert.strictEqual(completed, true);
@@ -337,13 +338,13 @@ describe('using Array as oracle', () => {
           pipe(
             fromArray(s),
             sample(fromArray(arr)),
-            subscribe({
-              next: data => res.push(data),
-              error: () => assert.fail('should not call error'),
-              complete: () => {
-                completed = true;
+            subscribe(
+              data => res.push(data),
+              err => {
+                if (err) assert.fail('should not terminate with error');
+                else completed = true;
               }
-            })
+            )
           );
 
           assert.strictEqual(completed, true);
@@ -362,13 +363,13 @@ describe('using Array as oracle', () => {
         let res: number[] = [];
         pipe(
           subject,
-          subscribe({
-            next: data => res.push(data),
-            error: () => assert.fail('should not call error'),
-            complete: () => {
-              completed = true;
+          subscribe(
+            data => res.push(data),
+            err => {
+              if (err) assert.fail('should not terminate with error');
+              else completed = true;
             }
-          })
+          )
         );
 
         for (const x of arr) {

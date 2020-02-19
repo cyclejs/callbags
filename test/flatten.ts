@@ -19,13 +19,13 @@ describe('flatten', () => {
       fromArray([1, 2, 3, 4, 5].map(of)),
       flatten,
       unsubscribeEarly(t => t === 0),
-      subscribe({
-        next: () => assert.fail('should not deliver data'),
-        error: () => assert.fail('should not call error'),
-        complete: () => {
-          completed = true;
+      subscribe(
+        () => assert.fail('should not deliver data'),
+        err => {
+          if (err) assert.fail('should not call error');
+          else completed = true;
         }
-      })
+      )
     );
 
     assert.strictEqual(completed, true);
@@ -36,17 +36,19 @@ describe('flatten', () => {
     pipe(
       of(fromPromise(Promise.resolve(0))),
       flatten,
-      subscribe({
-        next: data => {
+      subscribe(
+        data => {
           assert.strictEqual(data, 0);
           numData++;
         },
-        error: () => assert.fail('should not call error'),
-        complete: () => {
-          assert.strictEqual(numData, 1);
-          done();
+        err => {
+          if (err) assert.fail('should not call error');
+          else {
+            assert.strictEqual(numData, 1);
+            done();
+          }
         }
-      })
+      )
     );
   });
 
@@ -56,14 +58,17 @@ describe('flatten', () => {
     pipe(
       of(throwError('myError')),
       flatten,
-      subscribe({
-        next: () => assert.fail('should not deliver data'),
-        error: err => {
-          assert.strictEqual(err, 'myError');
-          numError++;
-        },
-        complete: () => assert.fail('should not complete')
-      })
+      subscribe(
+        () => assert.fail('should not deliver data'),
+        err => {
+          if (err) {
+            assert.strictEqual(err, 'myError');
+            numError++;
+          } else {
+            assert.fail('should not terminate');
+          }
+        }
+      )
     );
 
     assert.strictEqual(numError, 1);
@@ -75,14 +80,17 @@ describe('flatten', () => {
     pipe(
       throwError('myError'),
       flatten,
-      subscribe({
-        next: () => assert.fail('should not deliver data'),
-        error: err => {
-          assert.strictEqual(err, 'myError');
-          numError++;
-        },
-        complete: () => assert.fail('should not complete')
-      })
+      subscribe(
+        () => assert.fail('should not deliver data'),
+        err => {
+          if (err) {
+            assert.strictEqual(err, 'myError');
+            numError++;
+          } else {
+            assert.fail('should not terminate');
+          }
+        }
+      )
     );
     assert.strictEqual(numError, 1);
   });
@@ -92,17 +100,19 @@ describe('flatten', () => {
     pipe(
       fromArray([fromPromise(Promise.resolve(0)), of(1)]),
       flatten,
-      subscribe({
-        next: data => {
+      subscribe(
+        data => {
           assert.strictEqual(data, 1);
           numData++;
         },
-        error: () => assert.fail('should not call error'),
-        complete: () => {
-          assert.strictEqual(numData, 1);
-          done();
+        err => {
+          if (err) assert.fail('should not call error');
+          else {
+            assert.strictEqual(numData, 1);
+            done();
+          }
         }
-      })
+      )
     );
   });
 
@@ -116,14 +126,17 @@ describe('flatten', () => {
     pipe(
       testSource,
       flatten,
-      subscribe({
-        next: () => assert.fail('should not deliver data'),
-        error: err => {
-          assert.strictEqual(err, 'myError');
-          done();
-        },
-        complete: () => assert.fail('should not complete')
-      })
+      subscribe(
+        () => assert.fail('should not deliver data'),
+        err => {
+          if (err) {
+            assert.strictEqual(err, 'myError');
+            done();
+          } else {
+            assert.fail('should not terminate');
+          }
+        }
+      )
     );
   });
 });
