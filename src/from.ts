@@ -1,6 +1,6 @@
-import { Source, END } from './types';
+import { Producer, END } from './types';
 
-export function fromArray<T>(arr: Array<T>): Source<T> {
+export function fromArray<T>(arr: Array<T>): Producer<T> {
   return (_, sink) => {
     let ended = false;
 
@@ -16,7 +16,7 @@ export function fromArray<T>(arr: Array<T>): Source<T> {
   };
 }
 
-export function fromPromise<T>(p: Promise<T>): Source<T> {
+export function fromPromise<T>(p: Promise<T>): Producer<T> {
   return (_, sink) => {
     let ended = false;
 
@@ -40,7 +40,7 @@ export function fromPromise<T>(p: Promise<T>): Source<T> {
   };
 }
 
-export function from<T>(p: Promise<T> | Array<T>): Source<T> {
+export function from<T>(p: Promise<T> | Array<T>): Producer<T> {
   if (Array.isArray(p)) {
     return fromArray(p);
   } else {
@@ -48,7 +48,7 @@ export function from<T>(p: Promise<T> | Array<T>): Source<T> {
   }
 }
 
-export function of<T>(x: T): Source<T> {
+export function of<T>(x: T): Producer<T> {
   return (_, sink) => {
     let ended = false;
 

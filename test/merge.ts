@@ -3,7 +3,7 @@ import * as fc from 'fast-check';
 import { unsubscribeEarly } from './helpers';
 
 import {
-  Source,
+  Producer,
   pipe,
   merge,
   subscribe,
@@ -50,7 +50,7 @@ describe('merge', () => {
   it('should complete other sources on error', done => {
     let numCompleted = 0;
 
-    const testSource: Source<number> = (_, sink) => {
+    const testProducer: Producer<number> = (_, sink) => {
       sink(0, (t: any, d: any) => {
         if (t === 2 && !d) {
           numCompleted++;
@@ -60,10 +60,10 @@ describe('merge', () => {
 
     pipe(
       merge(
-        testSource,
+        testProducer,
         fromPromise(Promise.reject('someError')),
-        testSource,
-        testSource
+        testProducer,
+        testProducer
       ),
       subscribe(
         () => assert.fail('should not receive data'),
@@ -82,17 +82,17 @@ describe('merge', () => {
 
   // This test only makes sense with coverage
   it('should cleanup sources that complete early', done => {
-    const testSource: Source<number> = (_, sink) => {
+    const testProducer: Producer<number> = (_, sink) => {
       sink(0, () => {});
       sink(2);
     };
 
     pipe(
       merge(
-        testSource,
+        testProducer,
         fromPromise(Promise.reject('someError')),
-        testSource,
-        testSource
+        testProducer,
+        testProducer
       ),
       subscribe(
         () => assert.fail('should not receive data'),

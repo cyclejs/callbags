@@ -1,6 +1,6 @@
-import { Source, Talkback, END } from './types';
+import { Producer, Talkback } from './types';
 
-export function merge<T>(...sources: Source<T>[]): Source<T> {
+export function merge<T>(...sources: Producer<T>[]): Producer<T> {
   return (_, sink) => {
     const n = sources.length;
     let ended = false;

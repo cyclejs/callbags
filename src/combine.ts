@@ -1,12 +1,12 @@
-import { Source, ExtractContent, Talkback } from './types';
+import { Producer, ExtractContent, Talkback, Callbag } from './types';
 
-export function combineWith<T extends [...Source<any>[]], U>(
+export function combineWith<T extends [...Producer<unknown>[]], U>(
   f: (...args: ExtractContent<T>) => U,
   ...sources: T
-): Source<U> {
+): Producer<U> {
   return (_, sink) => {
     const n = sources.length;
-    let combined: any[] = Array(n).fill(undefined);
+    let combined: unknown[] = Array(n).fill(undefined);
     let talkbacks: Array<Talkback | undefined> = Array(n).fill(undefined);
     let numEnded = 0;
     let numStarted = 0;
@@ -45,8 +45,8 @@ export function combineWith<T extends [...Source<any>[]], U>(
   };
 }
 
-export function combine<T extends [...Source<any>[]]>(
+export function combine<T extends [...Producer<any>[]]>(
   ...sources: T
-): Source<ExtractContent<T>> {
+): Producer<ExtractContent<T>> {
   return combineWith((...x) => x, ...sources);
 }

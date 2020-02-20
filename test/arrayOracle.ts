@@ -17,8 +17,7 @@ import {
   sampleWith,
   sampleCombine,
   sample,
-  makeSubject,
-  Source
+  makeSubject
 } from '../src/index';
 
 function oneOf<T>(...args: T[]): fc.Arbitrary<T> {

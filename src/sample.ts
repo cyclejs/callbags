@@ -1,19 +1,19 @@
-import { Operator, Source, ExtractContent } from './types';
+import { Operator, Producer, ExtractContent } from './types';
 import { combine } from './combine';
 
-export function sampleCombine<T, U extends [...Source<any>[]]>(
+export function sampleCombine<T, U extends [...Producer<any>[]]>(
   ...sources: U
 ): Operator<T, Prepend<T, ExtractContent<U>>> {
   return sampleWith((x, y) => [x, ...y], combine<U>(...sources));
 }
 
-export function sample<T, U>(source: Source<U>): Operator<T, U> {
+export function sample<T, U>(source: Producer<U>): Operator<T, U> {
   return sampleWith((_, x) => x, source);
 }
 
 export function sampleWith<T, R, U>(
   f: (data: T, sampled: R) => U,
-  sample: Source<R>
+  sample: Producer<R>
 ): Operator<T, U> {
   return source => (_, sink) => {
     let hasSampled = false;

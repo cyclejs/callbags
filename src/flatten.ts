@@ -1,6 +1,6 @@
-import { Source, Talkback, END, ALL } from './types';
+import { Producer, Talkback, END, ALL } from './types';
 
-export function flatten<T>(source: Source<Source<T>>): Source<T> {
+export function flatten<T>(source: Producer<Producer<T>>): Producer<T> {
   return (_, sink) => {
     let outerTalkback: Talkback;
     let innerTalkback: Talkback | undefined;
@@ -15,9 +15,9 @@ export function flatten<T>(source: Source<Source<T>>): Source<T> {
         outerTalkback = d;
         sink(0, talkback);
       } else if (t === 1) {
-        const innerSource: Source<any> = d;
+        const innerProducer: Producer<any> = d;
         innerTalkback?.(2);
-        innerSource(0, (t: ALL, d: any) => {
+        innerProducer(0, (t: ALL, d: any) => {
           if (t === 0) innerTalkback = d;
           else if (t === 1) sink(1, d);
           else if (t === 2 && d) {

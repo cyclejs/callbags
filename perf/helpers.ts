@@ -1,6 +1,6 @@
 import { Suite } from 'benchmark';
 import { Stream } from 'xstream';
-import { subscribe, Source } from '../src/index';
+import { subscribe, Producer } from '../src/index';
 import { Observable } from 'rxjs';
 import * as most from 'most';
 
@@ -80,7 +80,7 @@ export function runXStream(stream: () => Stream<any>): (fn: any) => void {
   return f => stream().addListener(mkObserver(f));
 }
 
-export function runCallbags(source: () => Source<any>): (fn: any) => void {
+export function runCallbags(source: () => Producer<any>): (fn: any) => void {
   return deferred => {
     try {
       subscribe(noop, (e: any) => {

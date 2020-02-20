@@ -1,6 +1,6 @@
-import { Source } from './types';
+import { Producer } from './types';
 
-export function throwError<T>(error: any): Source<T> {
+export function throwError<T>(error: any): Producer<T> {
   return (_, sink) => {
     sink(0, () => {});
     sink(2, error);
