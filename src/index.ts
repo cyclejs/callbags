@@ -23,7 +23,7 @@ export { pipe } from './pipe';
 // Types
 export {
   Consumer,
-  Source,
+  Producer,
   Callbag,
   Operator,
   ALL,

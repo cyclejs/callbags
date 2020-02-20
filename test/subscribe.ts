@@ -1,7 +1,14 @@
 import * as assert from 'assert';
 
 import { interval } from 'callbag-basics';
-import { subscribe, of, throwError, pipe, Source, Callbag } from '../src/index';
+import {
+  subscribe,
+  of,
+  throwError,
+  pipe,
+  Producer,
+  Callbag
+} from '../src/index';
 import { Dispose } from '../src/types';
 
 describe('subscribe tests', () => {
@@ -28,7 +35,7 @@ describe('subscribe tests', () => {
     const THIRD = 120; // when final asserts are done
 
     const dispose = pipe(
-      interval(SECOND) as Source<number>,
+      interval(SECOND) as Producer<number>,
       subscribe(
         () => assert.fail('data should not be delivered after dispose'),
         () => assert.fail('termination should not occur after dispose')
