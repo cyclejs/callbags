@@ -26,6 +26,7 @@ export {
   Producer,
   Callbag,
   Operator,
+  Dispose,
   ALL,
   START,
   DATA,
