@@ -1,12 +1,12 @@
-import { Callbag, ALL } from './types';
+import { Subject, ALL, StrictSink } from './types';
 
-export function makeSubject<T>(): Callbag<T> {
-  let sinks: any[] = [];
+export function makeSubject<T>(): Subject<T> {
+  let sinks: Array<StrictSink<T> | undefined> = [];
 
-  return (type: ALL, data: any) => {
+  return (type: ALL, data: unknown) => {
     if (type === 0) {
-      const sink = data;
-      sinks.push(data);
+      const sink = data as StrictSink<T>;
+      sinks.push(sink);
       sink(0, () => {
         const i = sinks.indexOf(sink);
         sinks[i] = void 0;
@@ -15,7 +15,7 @@ export function makeSubject<T>(): Callbag<T> {
       let hasDeleted = false;
 
       for (let i = 0; i < sinks.length; i++) {
-        if (sinks[i]) sinks[i](type, data);
+        if (sinks[i]) sinks[i]!(type, data);
         else hasDeleted = true;
       }
 
