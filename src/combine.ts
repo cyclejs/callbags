@@ -1,4 +1,4 @@
-import { Producer, ExtractContent, Talkback, Callbag } from './types';
+import { Producer, ExtractContent, Talkback } from './types';
 
 export function combineWith<T extends [...Producer<unknown>[]], U>(
   f: (...args: ExtractContent<T>) => U,
