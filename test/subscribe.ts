@@ -7,9 +7,7 @@ import {
   throwError,
   pipe,
   Producer,
-  Callbag
 } from '../src/index';
-import { Dispose } from '../src/types';
 
 describe('subscribe tests', () => {
   it('should call onEnd() with an error argument when it fails', () => {
