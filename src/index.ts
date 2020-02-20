@@ -24,7 +24,7 @@ export { pipe } from './pipe';
 export {
   Consumer,
   Producer,
-  Callbag,
+  Subject,
   Operator,
   Dispose,
   ALL,

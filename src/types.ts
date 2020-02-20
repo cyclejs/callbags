@@ -4,21 +4,24 @@ export type END = 2;
 
 export type ALL = START | DATA | END;
 
-/**
- * The Callbag type should look like this, but TypeScript inference is not good enough:
- * ```ts
- * export type Callbag<T> = {
- *   (t: START, d: Talkback): void;
- *   (t: DATA, d: T): void;
- *   (t: END, d?: any): void;
- * };
- * ```
- */
-export type Callbag<T> = (t: ALL, d?: Talkback | T | any) => void;
-
 export type Talkback = (type: END, payload?: any) => void;
 
-export type Producer<T> = (t: START, sink: Callbag<T>) => void;
+export type Sink<T> = (type: ALL, payload?: Talkback | T | any) => void;
+
+export type Producer<T> = (t: START, sink: Sink<T>) => void;
+
+export type StrictSink<T> = {
+  (t: START, d: Talkback): void;
+  (t: DATA, d: T): void;
+  (t: END, d?: unknown): void;
+  (t: ALL, d?: unknown): void;
+};
+
+export type Subject<T> = {
+  (t: START, d: StrictSink<T>): void;
+  (t: DATA, d: T): void;
+  (t: END, d?: unknown): void;
+};
 
 export type Dispose = () => void;
 
