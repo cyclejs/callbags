@@ -48,4 +48,21 @@ describe('startWith', () => {
       })
     );
   });
+
+  it('should not deliver value after synchronous disposal', () => {
+    let taken = 0;
+
+    pipe(fromPromise(new Promise(() => {})), startWith('foo'), source => {
+      source(0, (t, d) => {
+        if (t === 0) {
+          d(2);
+          return;
+        }
+        taken++;
+      });
+      return () => {};
+    });
+
+    assert.strictEqual(taken, 0);
+  });
 });
