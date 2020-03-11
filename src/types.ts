@@ -6,7 +6,7 @@ export type ALL = START | DATA | END;
 
 export type Talkback = (type: END, payload?: any) => void;
 
-export type Sink<T> = (type: ALL, payload?: Talkback | T | any) => void;
+export type Sink<T> = (type: ALL, payload?: any) => void;
 
 export type Producer<T> = (t: START, sink: Sink<T>) => void;
 
