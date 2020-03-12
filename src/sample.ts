@@ -34,7 +34,7 @@ export function sampleWith<T, R, U>(
         if (d) {
           errored = true;
           sink(t, d);
-          talkback?.(t, d);
+          talkback?.(t);
         }
       }
     });
