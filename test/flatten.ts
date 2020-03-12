@@ -4,9 +4,11 @@ import { unsubscribeEarly } from './helpers';
 import {
   pipe,
   flatten,
+  map,
   of,
   fromPromise,
   subscribe,
+  take,
   fromArray,
   throwError
 } from '../src/index';
@@ -138,5 +140,19 @@ describe('flatten', () => {
         }
       )
     );
+  });
+
+  it('should unsubscribe inner stream when sink unsubscribes', () => {
+    let taken = 0;
+
+    pipe(
+      of(1),
+      map(() => fromArray([1, 2, 3, 4])),
+      flatten,
+      take(2),
+      subscribe(() => taken++)
+    );
+
+    assert.strictEqual(taken, 2);
   });
 });
