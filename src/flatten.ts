@@ -7,6 +7,7 @@ export function flatten<T>(source: Producer<Producer<T>>): Producer<T> {
     let outerEnded = false;
 
     const talkback = (_: END) => {
+      innerTalkback?.(2);
       outerTalkback(2);
     };
 
