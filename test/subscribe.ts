@@ -1,13 +1,7 @@
 import * as assert from 'assert';
 
 import { interval } from 'callbag-basics';
-import {
-  subscribe,
-  of,
-  throwError,
-  pipe,
-  Producer,
-} from '../src/index';
+import { subscribe, of, throwError, pipe, Producer } from '../src/index';
 
 describe('subscribe tests', () => {
   it('should call onEnd() with an error argument when it fails', () => {

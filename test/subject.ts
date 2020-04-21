@@ -1,11 +1,17 @@
 import * as assert from 'assert';
 import { unsubscribeEarly } from './helpers';
 
-import { pipe, makeSubject, subscribe } from '../src/index';
+import {
+  pipe,
+  makeSubject,
+  makeReplaySubject,
+  subscribe,
+  Subject
+} from '../src/index';
 
-describe('makeSubject', () => {
-  it('should allow sinks to unsubscribe', () => {
-    const subject = makeSubject<number>();
+function makeUnsubscribeTest(fn: () => Subject<number>) {
+  return () => {
+    const subject = fn();
 
     pipe(
       subject,
@@ -21,5 +27,13 @@ describe('makeSubject', () => {
     for (const x of [1, 2, 3, 4, 5]) {
       subject(1, x);
     }
-  });
+  };
+}
+
+describe('makeSubject', () => {
+  it('should allow sinks to unsubscribe', makeUnsubscribeTest(makeSubject));
+  it(
+    'should allow sinks to unsubscribe (replaySubject)',
+    makeUnsubscribeTest(makeReplaySubject)
+  );
 });
