@@ -1,6 +1,6 @@
 # @cycle/callbags
 
-[![Build Status](https://travis-ci.com/cyclejs/callbags.svg?branch=master)](https://travis-ci.com/cyclejs/callbags) [![codecov](https://codecov.io/gh/cyclejs/callbags/branch/master/graph/badge.svg)](https://codecov.io/gh/cyclejs/callbags) [![code style: prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg?style=flat-square)](https://github.com/prettier/prettier)
+![Build](https://github.com/cyclejs/callbags/workflows/Build/badge.svg) [![codecov](https://codecov.io/gh/cyclejs/callbags/branch/master/graph/badge.svg)](https://codecov.io/gh/cyclejs/callbags) [![code style: prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg)](https://github.com/prettier/prettier)
 
 This is the set of [callbags](https://github.com/callbag/callbag/blob/master/readme.md) that will most likely be used in the next version of Cycle.js. They are written in TypeScript and export ES modules to allow for tree shaking. Also, the implementation is specifically tailored to the Cycle.js use case, so all of them are push-only. Using them with sink or operators that try to pull the sources here will most likely lead to bugs und weird behavior.
 
@@ -28,6 +28,7 @@ Currently, the following set of operators is implemented, others might follow. N
 - [`combine`](./src/combine.ts)
 - [`combineWith`](./src/combine.ts)
 - [`makeSubject`](./src/subject.ts)
+- [`makeReplaySubject`](./src/subject.ts)
 
 ### Operators
 
