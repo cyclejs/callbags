@@ -1,5 +1,4 @@
 import * as assert from 'assert';
-import { unsubscribeEarly } from './helpers';
 
 import { pipe, makeReplaySubject, subscribe } from '../src/index';
 
@@ -29,7 +28,7 @@ describe('makeReplaySubject', () => {
     assert.deepStrictEqual(res, [1, 2, 3, 4, 5, 6]);
   });
 
-  it('should deliver data two second listener after buffer is deleted', () => {
+  it('should deliver data to second listener after buffer is deleted', () => {
     const subject = makeReplaySubject<number>(2);
 
     for (const x of [1, 2, 3, 4, 5]) {
@@ -57,7 +56,7 @@ describe('makeReplaySubject', () => {
           res2.push(d);
         },
         e => {
-          if (e) assert.fail('shoudl not terminate with error');
+          if (e) assert.fail('should not terminate with error');
         }
       )
     );
@@ -74,7 +73,7 @@ describe('makeReplaySubject', () => {
           res3.push(d);
         },
         e => {
-          if (e) assert.fail('shoudl not terminate with error');
+          if (e) assert.fail('should not terminate with error');
         }
       )
     );
