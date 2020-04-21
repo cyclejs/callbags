@@ -1,4 +1,1 @@
-codecov:
-  ci:
-    - "travis.org"
 comment: false
