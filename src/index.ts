@@ -13,6 +13,7 @@ export { startWith } from './startWith';
 export { skip, last } from './skip';
 export { flatten } from './flatten';
 export { sample, sampleWith, sampleCombine } from './sample';
+export { uponStart, uponEnd } from './hooks';
 
 // Sinks
 export { subscribe } from './subscribe';
