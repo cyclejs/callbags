@@ -1,5 +1,7 @@
 import { Producer, END } from './types';
 
+import { create } from './identities';
+
 export function fromArray<T>(arr: Array<T>): Producer<T> {
   return (_, sink) => {
     let ended = false;
@@ -17,27 +19,17 @@ export function fromArray<T>(arr: Array<T>): Producer<T> {
 }
 
 export function fromPromise<T>(p: Promise<T>): Producer<T> {
-  return (_, sink) => {
-    let ended = false;
-
-    const resolve = (x: T) => {
-      if (ended) return;
-      sink(1, x);
-      if (ended) return;
-      sink(2);
-    };
-
-    const reject = (err = new Error()) => {
-      if (ended) return;
-      sink(2, err);
-    };
-
-    p.then(resolve, reject);
-
-    sink(0, (_: END) => {
-      ended = true;
-    });
-  };
+  return create((next, complete) => {
+    p.then(
+      x => {
+        next(x);
+        complete();
+      },
+      (err = new Error()) => {
+        complete(err);
+      }
+    );
+  });
 }
 
 export function from<T>(p: Promise<T> | Array<T>): Producer<T> {
@@ -49,15 +41,8 @@ export function from<T>(p: Promise<T> | Array<T>): Producer<T> {
 }
 
 export function of<T>(x: T): Producer<T> {
-  return (_, sink) => {
-    let ended = false;
-
-    sink(0, (_: END) => {
-      ended = true;
-    });
-
-    if (ended) return;
-    sink(1, x);
-    if (!ended) sink(2);
-  };
+  return create((next, complete) => {
+    next(x);
+    complete();
+  });
 }

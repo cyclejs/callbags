@@ -1,9 +1,9 @@
 // Factories
 export { fromArray, fromPromise, from, of } from './from';
-export { throwError } from './throwError';
 export { merge } from './merge';
 export { combineWith, combine } from './combine';
 export { makeSubject, makeReplaySubject } from './subject';
+export { create, never, empty, throwError } from './identities';
 
 // Operators
 export { map, scan } from './map';
