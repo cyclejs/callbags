@@ -14,6 +14,7 @@ export { skip, last } from './skip';
 export { flatten } from './flatten';
 export { sample, sampleWith, sampleCombine } from './sample';
 export { uponStart, uponEnd } from './hooks';
+export { multicast } from './multicast';
 
 // Sinks
 export { subscribe } from './subscribe';
