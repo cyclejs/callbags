@@ -1,21 +1,21 @@
-import { Producer, END } from './types';
+import { Producer } from './types';
 
 import { create } from './identities';
 
 export function fromArray<T>(arr: Array<T>): Producer<T> {
-  return (_, sink) => {
-    let ended = false;
-
-    sink(0, (_: END) => {
+  let ended = false;
+  return create(
+    (next, complete) => {
+      for (let i = 0; i < arr.length; i++) {
+        if (ended) return;
+        next(arr[i]);
+      }
+      complete();
+    },
+    () => {
       ended = true;
-    });
-
-    for (let i = 0; i < arr.length; i++) {
-      if (ended) break;
-      sink(1, arr[i]);
     }
-    if (!ended) sink(2);
-  };
+  );
 }
 
 export function fromPromise<T>(p: Promise<T>): Producer<T> {

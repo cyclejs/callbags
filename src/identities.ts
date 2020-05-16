@@ -1,7 +1,8 @@
 import { Producer, END } from './types';
 
 export function create<T>(
-  f: (next: (x: T) => void, complete: (err?: any) => void) => void
+  f: (next: (x: T) => void, complete: (err?: any) => void) => void,
+  onComplete?: (err?: any) => void
 ): Producer<T> {
   return (_, sink) => {
     let ended = false;
@@ -14,10 +15,12 @@ export function create<T>(
     const complete = (err?: any) => {
       if (ended) return;
       sink(2, err);
+      onComplete?.(err);
     };
 
     sink(0, (_: END) => {
       ended = true;
+      onComplete?.();
     });
 
     f(next, complete);
