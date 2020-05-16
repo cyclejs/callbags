@@ -1,0 +1,6 @@
+perf/
+test/
+.nyc_output/
+coverage/
+
+*.log
