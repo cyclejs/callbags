@@ -28,17 +28,27 @@ export function create<T>(
 }
 
 export function empty<T>(): Producer<T> {
-  return create((_, complete) => {
-    complete();
-  });
+  return (_, sink) => {
+    let ended = false;
+    sink(0, () => {
+      ended = true;
+    });
+    if (!ended) sink(2);
+  };
 }
 
 export function never<T>(): Producer<T> {
-  return create(() => {});
+  return (_, sink) => {
+    sink(0, () => {});
+  };
 }
 
 export function throwError<T>(error: any): Producer<T> {
-  return create((_, complete) => {
-    complete(error);
-  });
+  return (_, sink) => {
+    let ended = false;
+    sink(0, () => {
+      ended = true;
+    });
+    if (!ended) sink(2, error);
+  };
 }
