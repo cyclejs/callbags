@@ -25,17 +25,21 @@ describe('subscribe tests', () => {
     const FIRST = 40; // when dispose is called
     const SECOND = 80; // when source *would* deliver data
     const THIRD = 120; // when final asserts are done
+    let completed = 0;
 
     const dispose = pipe(
       interval(SECOND) as Producer<number>,
       subscribe(
         () => assert.fail('data should not be delivered after dispose'),
-        () => assert.fail('termination should not occur after dispose')
+        () => completed++
       )
     );
     assert.strictEqual(typeof dispose, 'function');
     setTimeout(dispose, FIRST);
-    setTimeout(done, THIRD);
+    setTimeout(() => {
+      assert.strictEqual(completed, 1);
+      done();
+    }, THIRD);
   });
 
   describe('dispose()', () => {
@@ -58,17 +62,52 @@ describe('subscribe tests', () => {
         }, THIRD);
       };
 
+      let completed = 0;
       const dispose = pipe(
         source,
         subscribe(
           () => assert.fail('data should not be delivered after dispose'),
-          () => assert.fail('termination should not occur')
+          () => completed++
         )
       );
       assert.strictEqual(typeof dispose, 'function');
       setTimeout(dispose, FIRST);
       setTimeout(() => {
-        assert.equal(talkbackCalled, true);
+        assert.strictEqual(talkbackCalled, true);
+        assert.strictEqual(completed, 1);
+        done();
+      }, FOURTH);
+    });
+
+    it('works without complete() function', done => {
+      const FIRST = 50; // when dispose is called
+      const SECOND = 100; // when source starts listening to sink
+      const THIRD = 200; // when source *would* deliver data
+      const FOURTH = 300; // when final asserts are done
+
+      let talkbackCalled = false;
+      const source = (_: 0, sink: any) => {
+        setTimeout(() => {
+          sink(0, () => {
+            talkbackCalled = true;
+            clearTimeout(timeout);
+          });
+        }, SECOND);
+        let timeout = setTimeout(() => {
+          sink(1, 42);
+        }, THIRD);
+      };
+
+      const dispose = pipe(
+        source,
+        subscribe(() =>
+          assert.fail('data should not be delivered after dispose')
+        )
+      );
+      assert.strictEqual(typeof dispose, 'function');
+      setTimeout(dispose, FIRST);
+      setTimeout(() => {
+        assert.strictEqual(talkbackCalled, true);
         done();
       }, FOURTH);
     });
