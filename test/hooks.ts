@@ -7,7 +7,8 @@ import {
   pipe,
   subscribe,
   of,
-  throwError
+  throwError,
+  never
 } from '../src/index';
 
 describe('hooks', () => {
@@ -70,7 +71,7 @@ describe('hooks', () => {
         effect = true;
       }),
       subscribe(
-        d => assert.strictEqual(d, 5),
+        () => assert.fail('should not deliver data'),
         e => {
           assert.strictEqual(e, 'myError');
           assert.strictEqual(effect, true);
@@ -78,6 +79,26 @@ describe('hooks', () => {
         }
       )
     );
+    assert.strictEqual(completed, true);
+  });
+
+  it('uponEnd should be called when the stream is disposed', () => {
+    let effect = false;
+    let completed = false;
+    const dispose = pipe(
+      never(),
+      uponEnd(() => {
+        effect = true;
+      }),
+      subscribe(
+        () => assert.fail('should not deliver data'),
+        () => {
+          assert.strictEqual(effect, true);
+          completed = true;
+        }
+      )
+    );
+    dispose();
     assert.strictEqual(completed, true);
   });
 });

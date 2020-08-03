@@ -16,9 +16,9 @@ export function subscribe<T>(
       if (t === 2) onEnd?.(d);
     });
     return () => {
-      onEnd?.();
       if (talkback) talkback(2);
       else disposeLater = true;
+      onEnd?.();
     };
   };
 }
