@@ -244,9 +244,10 @@ describe('using Array as oracle', () => {
     );
   });
 
-  it('flatten()', () => {
+  it('flatten()', function() {
+    this.timeout(10000);
     fc.assert(
-      fc.property(fc.array(fc.array(fc.anything(), 0, 100), 0, 100), arr => {
+      fc.property(fc.array(fc.array(fc.anything(), 0, 75), 0, 100), arr => {
         const oracle = arr.reduce((acc, curr) => acc.concat(curr), []);
 
         let completed = false;

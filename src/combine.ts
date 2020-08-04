@@ -6,7 +6,8 @@ export function combineWith<T extends [...Producer<unknown>[]], U>(
 ): Producer<U> {
   return (_, sink) => {
     const n = sources.length;
-    let combined: unknown[] = Array(n).fill(undefined);
+    let combined: unknown[] = Array(n);
+    let filled = false;
     let talkbacks: Array<Talkback | undefined> = Array(n).fill(undefined);
     let numEnded = 0;
     let numStarted = 0;
@@ -28,8 +29,18 @@ export function combineWith<T extends [...Producer<unknown>[]], U>(
           if (++numStarted === 1) sink(0, talkback);
         } else if (t === 1) {
           combined[i] = d;
-          if (combined.indexOf(undefined) === -1)
+          if (!filled) {
+            filled = true;
+            for (let i = 0; i < combined.length; i++) {
+              if (!(i in combined)) {
+                filled = false;
+                break;
+              }
+            }
+          }
+          if (filled) {
             sink(1, f(...(combined as any)));
+          }
         } else if (t === 2 && d) {
           ended = true;
           for (let j = 0; j < n; j++) {
