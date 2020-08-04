@@ -25,19 +25,20 @@ describe('subscribe tests', () => {
     const FIRST = 40; // when dispose is called
     const SECOND = 80; // when source *would* deliver data
     const THIRD = 120; // when final asserts are done
-    let completed = 0;
+    let disposed = 0;
 
     const dispose = pipe(
       interval(SECOND) as Producer<number>,
       subscribe(
         () => assert.fail('data should not be delivered after dispose'),
-        () => completed++
+        () => assert.fail('should not complete after dispose'),
+        () => disposed++
       )
     );
     assert.strictEqual(typeof dispose, 'function');
     setTimeout(dispose, FIRST);
     setTimeout(() => {
-      assert.strictEqual(completed, 1);
+      assert.strictEqual(disposed, 1);
       done();
     }, THIRD);
   });
@@ -62,19 +63,20 @@ describe('subscribe tests', () => {
         }, THIRD);
       };
 
-      let completed = 0;
+      let disposed = 0;
       const dispose = pipe(
         source,
         subscribe(
           () => assert.fail('data should not be delivered after dispose'),
-          () => completed++
+          () => assert.fail('should not complete after dispose'),
+          () => disposed++
         )
       );
       assert.strictEqual(typeof dispose, 'function');
       setTimeout(dispose, FIRST);
       setTimeout(() => {
         assert.strictEqual(talkbackCalled, true);
-        assert.strictEqual(completed, 1);
+        assert.strictEqual(disposed, 1);
         done();
       }, FOURTH);
     });

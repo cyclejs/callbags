@@ -84,21 +84,14 @@ describe('hooks', () => {
 
   it('uponEnd should be called when the stream is disposed', () => {
     let effect = false;
-    let completed = false;
     const dispose = pipe(
       never(),
       uponEnd(() => {
         effect = true;
       }),
-      subscribe(
-        () => assert.fail('should not deliver data'),
-        () => {
-          assert.strictEqual(effect, true);
-          completed = true;
-        }
-      )
+      subscribe(() => assert.fail('should not deliver data'))
     );
     dispose();
-    assert.strictEqual(completed, true);
+    assert.strictEqual(effect, true);
   });
 });

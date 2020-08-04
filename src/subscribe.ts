@@ -2,7 +2,8 @@ import { Consumer, Talkback } from './types';
 
 export function subscribe<T>(
   onData: (t: T) => void,
-  onEnd?: (e?: any) => void
+  onEnd?: (e?: any) => void,
+  onDispose?: () => void
 ): Consumer<T> {
   return source => {
     let talkback: Talkback | undefined;
@@ -18,7 +19,7 @@ export function subscribe<T>(
     return () => {
       if (talkback) talkback(2);
       else disposeLater = true;
-      onEnd?.();
+      onDispose?.();
     };
   };
 }
