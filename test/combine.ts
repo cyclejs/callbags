@@ -15,7 +15,7 @@ import {
 describe('combine()', () => {
   it('should combine to the same array', () => {
     fc.assert(
-      fc.property(fc.array(fc.integer(), 1, 100), arr => {
+      fc.property(fc.array(fc.anything(), 1, 100), arr => {
         let result: any;
         let completed = false;
         let numData = 0;

@@ -15,7 +15,7 @@ import {
 describe('merge', () => {
   it('should deliver synchronous sources in order', () => {
     fc.assert(
-      fc.property(fc.array(fc.array(fc.integer())), arr => {
+      fc.property(fc.array(fc.array(fc.anything())), arr => {
         const oracle = arr.reduce((acc, curr) => acc.concat(curr), []);
 
         let result: any[] = [];
