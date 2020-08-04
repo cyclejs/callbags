@@ -146,7 +146,7 @@ describe('using Array as oracle', () => {
 
   it('take()', () => {
     fc.assert(
-      fc.property(fc.array(fc.integer(), 0, 100), fc.nat(150), (arr, n) => {
+      fc.property(fc.array(fc.anything(), 0, 100), fc.nat(150), (arr, n) => {
         const oracle = arr.slice(0, n);
 
         let res: any[] = [];
@@ -171,7 +171,7 @@ describe('using Array as oracle', () => {
 
   it('first()', () => {
     fc.assert(
-      fc.property(fc.array(fc.integer(), 0, 100), arr => {
+      fc.property(fc.array(fc.anything(), 0, 100), arr => {
         const oracle = arr.slice(0, 1);
 
         let res: any[] = [];
@@ -196,7 +196,7 @@ describe('using Array as oracle', () => {
 
   it('skip()', () => {
     fc.assert(
-      fc.property(fc.array(fc.integer(), 0, 100), fc.nat(150), (arr, n) => {
+      fc.property(fc.array(fc.anything(), 0, 100), fc.nat(150), (arr, n) => {
         const oracle = arr.slice(n);
 
         let res: any[] = [];
@@ -221,7 +221,7 @@ describe('using Array as oracle', () => {
 
   it('last()', () => {
     fc.assert(
-      fc.property(fc.array(fc.integer(), 0, 100), arr => {
+      fc.property(fc.array(fc.anything(), 0, 100), arr => {
         const oracle = arr.slice(-1);
 
         let res: any[] = [];
@@ -244,9 +244,10 @@ describe('using Array as oracle', () => {
     );
   });
 
-  it('flatten()', () => {
+  it('flatten()', function() {
+    this.timeout(10000);
     fc.assert(
-      fc.property(fc.array(fc.array(fc.integer(), 0, 100), 0, 100), arr => {
+      fc.property(fc.array(fc.array(fc.anything(), 0, 75), 0, 100), arr => {
         const oracle = arr.reduce((acc, curr) => acc.concat(curr), []);
 
         let completed = false;
@@ -296,11 +297,11 @@ describe('using Array as oracle', () => {
 
   it('sampleCombine()', () => {
     fc.assert(
-      fc.property(fc.array(fc.integer(), 0, 100), arr => {
+      fc.property(fc.array(fc.anything(), 0, 100), arr => {
         let completed = false;
         let numData = 0;
 
-        let res: number[] = [];
+        let res: any[] = [];
         pipe(
           fromArray(arr.slice(0, 1)),
           sampleCombine(...arr.slice(1).map(x => of(x))),
@@ -326,14 +327,14 @@ describe('using Array as oracle', () => {
   it('sample()', () => {
     fc.assert(
       fc.property(
-        fc.array(fc.integer(), 0, 100),
-        fc.array(fc.integer()),
+        fc.array(fc.anything(), 0, 100),
+        fc.array(fc.anything()),
         (arr, s) => {
           const oracle =
             arr.length === 0 ? [] : s.map(() => arr[arr.length - 1]);
           let completed = false;
 
-          let res: number[] = [];
+          let res: any[] = [];
           pipe(
             fromArray(s),
             sample(fromArray(arr)),
@@ -355,11 +356,11 @@ describe('using Array as oracle', () => {
 
   it('makeSubject', () => {
     fc.assert(
-      fc.property(fc.array(fc.integer(), 0, 100), arr => {
-        const subject = makeSubject<number>();
+      fc.property(fc.array(fc.anything(), 0, 100), arr => {
+        const subject = makeSubject<any>();
 
         let completed = false;
-        let res: number[] = [];
+        let res: any[] = [];
         pipe(
           subject,
           subscribe(

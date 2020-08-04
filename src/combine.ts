@@ -4,12 +4,15 @@ export function combineWith<T extends [...Producer<unknown>[]], U>(
   f: (...args: ExtractContent<T>) => U,
   ...sources: T
 ): Producer<U> {
+  const empty = {};
+
   return (_, sink) => {
     const n = sources.length;
-    let combined: unknown[] = Array(n).fill(undefined);
+    let combined: unknown[] = Array(n).fill(empty);
     let talkbacks: Array<Talkback | undefined> = Array(n).fill(undefined);
     let numEnded = 0;
     let numStarted = 0;
+    let numData = 0;
     let ended = false;
 
     const talkback = (_: number, d?: any) => {
@@ -27,9 +30,13 @@ export function combineWith<T extends [...Producer<unknown>[]], U>(
           talkbacks[i] = d;
           if (++numStarted === 1) sink(0, talkback);
         } else if (t === 1) {
+          if (numData < n && combined[i] === empty) {
+            numData++;
+          }
           combined[i] = d;
-          if (combined.indexOf(undefined) === -1)
+          if (numData === n) {
             sink(1, f(...(combined as any)));
+          }
         } else if (t === 2 && d) {
           ended = true;
           for (let j = 0; j < n; j++) {
