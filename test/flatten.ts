@@ -10,7 +10,8 @@ import {
   subscribe,
   take,
   fromArray,
-  throwError
+  throwError,
+  never
 } from '../src/index';
 
 describe('flatten', () => {
@@ -154,5 +155,26 @@ describe('flatten', () => {
     );
 
     assert.strictEqual(taken, 2);
+  });
+
+  it('should not unsubscribe from completed outer source when waiting for inner completion', () => {
+    let outerDisposed = false;
+    const testSource = (_: number, sink: any) => {
+      sink(0, (t: number) => {
+        if (t === 2) outerDisposed = true;
+      });
+      sink(1, true);
+      sink(2);
+    };
+
+    const dispose = pipe(
+      testSource,
+      map(never),
+      flatten,
+      subscribe(() => {})
+    );
+
+    dispose();
+    assert.strictEqual(outerDisposed, false);
   });
 });

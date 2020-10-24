@@ -8,7 +8,7 @@ export function flatten<T>(source: Producer<Producer<T>>): Producer<T> {
 
     const talkback = (_: END) => {
       innerTalkback?.(2);
-      outerTalkback(2);
+      if (!outerEnded) outerTalkback(2);
     };
 
     source(0, (t, d) => {
