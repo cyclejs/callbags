@@ -21,7 +21,7 @@ export function flatten<T>(source: Producer<Producer<T>>): Producer<T> {
           if (t === 0) innerTalkback = d;
           else if (t === 1) sink(1, d);
           else if (t === 2 && d) {
-            outerTalkback!(2);
+            outerTalkback?.(2);
             sink(2, d);
           } else {
             if (!outerTalkback) sink(2);
