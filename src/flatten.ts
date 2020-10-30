@@ -2,13 +2,12 @@ import { Producer, Talkback, END, ALL } from './types';
 
 export function flatten<T>(source: Producer<Producer<T>>): Producer<T> {
   return (_, sink) => {
-    let outerTalkback: Talkback;
+    let outerTalkback: Talkback | undefined;
     let innerTalkback: Talkback | undefined;
-    let outerEnded = false;
 
     const talkback = (_: END) => {
       innerTalkback?.(2);
-      if (!outerEnded) outerTalkback(2);
+      outerTalkback?.(2);
     };
 
     source(0, (t, d) => {
@@ -22,10 +21,10 @@ export function flatten<T>(source: Producer<Producer<T>>): Producer<T> {
           if (t === 0) innerTalkback = d;
           else if (t === 1) sink(1, d);
           else if (t === 2 && d) {
-            outerTalkback(2);
+            outerTalkback!(2);
             sink(2, d);
           } else {
-            if (outerEnded) sink(2);
+            if (!outerTalkback) sink(2);
             else {
               innerTalkback = void 0;
             }
@@ -36,7 +35,7 @@ export function flatten<T>(source: Producer<Producer<T>>): Producer<T> {
         sink(2, d);
       } else {
         if (!innerTalkback) sink(2);
-        else outerEnded = true;
+        else outerTalkback = void 0;
       }
     });
   };
