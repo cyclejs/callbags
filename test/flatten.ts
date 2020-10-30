@@ -177,4 +177,28 @@ describe('flatten', () => {
     dispose();
     assert.strictEqual(outerDisposed, false);
   });
+
+  it('should not unsubscribe from completed outer source when inner errors', done => {
+    let outerDisposed = false;
+    const testSource = (_: number, sink: any) => {
+      sink(0, (t: number) => {
+        if (t === 2) outerDisposed = true;
+      });
+      sink(1, true);
+      sink(2);
+    };
+
+    pipe(
+      testSource,
+      map(() => fromPromise(Promise.reject('myError'))),
+      flatten,
+      subscribe(
+        () => {},
+        err => {
+          assert.strictEqual(outerDisposed, false);
+          done();
+        }
+      )
+    );
+  });
 });
