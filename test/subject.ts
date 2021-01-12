@@ -4,9 +4,9 @@ import { unsubscribeEarly } from './helpers';
 import {
   pipe,
   makeSubject,
-  makeReplaySubject,
+  makeAsyncSubject,
   subscribe,
-  Subject
+  Subject,
 } from '../src/index';
 
 function makeUnsubscribeTest(fn: () => Subject<number>) {
@@ -34,6 +34,6 @@ describe('makeSubject', () => {
   it('should allow sinks to unsubscribe', makeUnsubscribeTest(makeSubject));
   it(
     'should allow sinks to unsubscribe (replaySubject)',
-    makeUnsubscribeTest(makeReplaySubject)
+    makeUnsubscribeTest(makeAsyncSubject)
   );
 });
