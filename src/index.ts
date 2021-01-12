@@ -2,7 +2,7 @@
 export { fromArray, fromPromise, from, of } from './from';
 export { merge } from './merge';
 export { combineWith, combine } from './combine';
-export { makeSubject, makeReplaySubject } from './subject';
+export { makeSubject, makeAsyncSubject } from './subject';
 export { create, never, empty, throwError } from './identities';
 
 // Operators
