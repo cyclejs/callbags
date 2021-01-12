@@ -69,7 +69,7 @@ describe('makeAsyncSubject', () => {
     assert.strictEqual(completed, 2);
   });
 
-  it.only('should deliver data that is emitted sync while delivering earlier data', done => {
+  it('should deliver data that is emitted sync while delivering earlier data', done => {
     const subject = makeAsyncSubject();
     const expected = [0, 1];
 
