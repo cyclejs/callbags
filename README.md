@@ -31,7 +31,7 @@ Currently, the following set of operators is implemented, others might follow. N
 - [`combine`](./src/combine.ts)
 - [`combineWith`](./src/combine.ts)
 - [`makeSubject`](./src/subject.ts)
-- [`makeReplaySubject`](./src/subject.ts)
+- [`makeAsyncSubject`](./src/subject.ts)
 
 ### Operators
 
