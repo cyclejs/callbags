@@ -68,4 +68,26 @@ describe('makeAsyncSubject', () => {
 
     assert.strictEqual(completed, 2);
   });
+
+  it('should deliver data that is emitted sync while delivering earlier data', done => {
+    const subject = makeAsyncSubject();
+    const expected = [0, 1];
+
+    pipe(
+      subject,
+      subscribe(d => {
+        assert.strictEqual(d, expected.shift());
+        if (d === 0) {
+          subject(1, 1);
+        }
+      })
+    );
+
+    subject(1, 0);
+
+    setTimeout(() => {
+      assert.strictEqual(expected.length, 0);
+      done();
+    }, 10);
+  });
 });

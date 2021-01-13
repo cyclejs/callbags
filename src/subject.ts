@@ -55,7 +55,11 @@ export function makeAsyncSubject<T>(): Subject<T> {
         sinks = sinks.filter(Boolean);
       }
 
-      promise = void 0;
+      if (bufferLength > 0) {
+        promise = scheduleData();
+      } else {
+        promise = void 0;
+      }
     });
 
   return (type: ALL, data: unknown) => {
