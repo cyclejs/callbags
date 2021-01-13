@@ -8,7 +8,7 @@ import {
   subscribe,
   from,
   fromArray,
-  fromPromise
+  fromPromise,
 } from '../src/index';
 
 describe('fromArray', () => {
