@@ -11,35 +11,38 @@ import {
   throwError,
   fromPromise,
   never,
-  makeSubject
+  makeSubject,
 } from '../src/index';
 
 describe('combine()', () => {
   it('should combine to the same array', () => {
     fc.assert(
-      fc.property(fc.array(fc.anything(), 1, 100), arr => {
-        let result: any;
-        let completed = false;
-        let numData = 0;
+      fc.property(
+        fc.array(fc.anything(), { minLength: 1, maxLength: 100 }),
+        arr => {
+          let result: any;
+          let completed = false;
+          let numData = 0;
 
-        pipe(
-          combine(...arr.map(of)),
-          subscribe(
-            data => {
-              result = data;
-              numData++;
-            },
-            err => {
-              if (err) assert.fail('should not call error');
-              else completed = true;
-            }
-          )
-        );
+          pipe(
+            combine(...arr.map(of)),
+            subscribe(
+              data => {
+                result = data;
+                numData++;
+              },
+              err => {
+                if (err) assert.fail('should not call error');
+                else completed = true;
+              }
+            )
+          );
 
-        assert.strictEqual(completed, true);
-        assert.strictEqual(numData, 1);
-        assert.deepStrictEqual(result, arr);
-      })
+          assert.strictEqual(completed, true);
+          assert.strictEqual(numData, 1);
+          assert.deepStrictEqual(result, arr);
+        }
+      )
     );
   });
 
@@ -115,7 +118,7 @@ describe('combine()', () => {
     );
   });
 
-  it('should emit values from the same source in the same order', function() {
+  it('should emit values from the same source in the same order', function () {
     this.timeout(20000);
 
     const arbitrary = fc
@@ -127,46 +130,49 @@ describe('combine()', () => {
       .filter(arr => new Set(arr).size === arr.length);
 
     return fc.assert(
-      fc.asyncProperty(fc.array(arbitrary, 2, 6), arr => {
-        const subjects = arr.map(() => makeSubject());
+      fc.asyncProperty(
+        fc.array(arbitrary, { minLength: 2, maxLength: 6 }),
+        arr => {
+          const subjects = arr.map(() => makeSubject());
 
-        arr.forEach((arr2, idx) => {
-          let i = 0;
-          let id = setInterval(() => {
-            subjects[idx](1, arr2[i++]);
-            if (i === arr2.length) {
-              clearInterval(id);
-              subjects[idx](2);
-            }
-          }, 10);
-        });
+          arr.forEach((arr2, idx) => {
+            let i = 0;
+            let id = setInterval(() => {
+              subjects[idx](1, arr2[i++]);
+              if (i === arr2.length) {
+                clearInterval(id);
+                subjects[idx](2);
+              }
+            }, 10);
+          });
 
-        return new Promise(resolve => {
-          let res: any[] = [];
-          pipe(
-            combine(...subjects),
-            subscribe(
-              x => res.push(x),
-              () => resolve(res)
-            )
-          );
-        }).then((res: any) => {
-          let columns: any[][] = arr.map(() => []);
-          for (const row of res) {
-            assert.strictEqual(row.length, arr.length);
-            for (let i = 0; i < row.length; i++) {
-              const col = columns[i];
-              if (col.length === 0 || col[col.length - 1] !== row[i]) {
-                col.push(row[i]);
+          return new Promise(resolve => {
+            let res: any[] = [];
+            pipe(
+              combine(...subjects),
+              subscribe(
+                x => res.push(x),
+                () => resolve(res)
+              )
+            );
+          }).then((res: any) => {
+            let columns: any[][] = arr.map(() => []);
+            for (const row of res) {
+              assert.strictEqual(row.length, arr.length);
+              for (let i = 0; i < row.length; i++) {
+                const col = columns[i];
+                if (col.length === 0 || col[col.length - 1] !== row[i]) {
+                  col.push(row[i]);
+                }
               }
             }
-          }
 
-          for (let i = 0; i < columns.length; i++) {
-            assert.deepStrictEqual(columns[i], arr[i]);
-          }
-        });
-      })
+            for (let i = 0; i < columns.length; i++) {
+              assert.deepStrictEqual(columns[i], arr[i]);
+            }
+          });
+        }
+      )
     );
   });
 });
