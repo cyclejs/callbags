@@ -16,6 +16,7 @@ export function create<T>(
       if (ended) return;
       sink(2, err);
       onComplete?.(err);
+      ended = true;
     };
 
     sink(0, (_: END) => {
