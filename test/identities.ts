@@ -69,6 +69,18 @@ describe('identity tests', () => {
     );
   });
 
+  it('create() should not send data after completion', done => {
+    pipe(
+      create((next, complete) => {
+        complete();
+        for (const x of [1, 2, 3, 4]) {
+          next(x);
+        }
+      }),
+      subscribe(() => done('should not deliver data'), done)
+    );
+  });
+
   it('create() should call completion callback when unsubscribing early', done => {
     let completed = false;
     pipe(
