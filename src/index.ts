@@ -6,7 +6,7 @@ export { makeSubject, makeAsyncSubject } from './subject';
 export { create, never, empty, throwError } from './identities';
 
 // Operators
-export { map, scan } from './map';
+export { map, scan, debug } from './map';
 export { take, first } from './take';
 export { filter } from './filter';
 export { startWith } from './startWith';
@@ -32,5 +32,5 @@ export {
   ALL,
   START,
   DATA,
-  END
+  END,
 } from './types';

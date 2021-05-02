@@ -31,3 +31,11 @@ export function scan<A, B>(
     });
   };
 }
+
+export function debug<A>(msg: string | ((a: A) => void)): Operator<A, A> {
+  const f = typeof msg === 'function' ? msg : (x: A) => console.log(msg, x);
+  return map(x => {
+    f(x);
+    return x;
+  });
+}
