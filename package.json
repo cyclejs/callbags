@@ -1,6 +1,6 @@
 {
   "name": "@cycle/callbags",
-  "version": "3.0.2",
+  "version": "3.1.0",
   "description": "",
   "main": "build/bundle.cjs.js",
   "module": "build/bundle.esm.js",
