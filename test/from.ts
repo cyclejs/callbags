@@ -59,7 +59,7 @@ describe('fromPromise', () => {
                 if (e) assert.fail(e);
                 else {
                   completed++;
-                  resolve();
+                  resolve(null);
                 }
               }
             )

@@ -11,7 +11,8 @@ import {
   throwError,
   fromPromise,
   never,
-  makeSubject
+  makeSubject,
+  Producer
 } from '../src/index';
 
 describe('combine()', () => {
@@ -46,7 +47,7 @@ describe('combine()', () => {
   it('should allow sources to unsubscribe', () => {
     let completed = false;
     pipe(
-      combineWith((x, y) => x + y, of(1), of(2)),
+      combineWith((x, y) => x + y, of(1) as Producer<number>, of(2) as Producer<number>),
       unsubscribeEarly(t => t === 0),
       subscribe(
         () => assert.fail('should not deliver data'),
@@ -65,9 +66,9 @@ describe('combine()', () => {
     pipe(
       combineWith(
         (x, y, z) => x * y * z,
-        of(1),
+        of(1) as Producer<number>,
         throwError<number>('myError'),
-        of(2)
+        of(2) as Producer<number>
       ),
       subscribe(
         () => assert.fail('should not deliver data'),
