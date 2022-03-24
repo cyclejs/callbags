@@ -12,7 +12,7 @@ import {
   take,
   first,
   last,
-  skip,
+  drop,
   flatten,
   sampleWith,
   sampleCombine,
@@ -194,7 +194,7 @@ describe('using Array as oracle', () => {
     );
   });
 
-  it('skip()', () => {
+  it('drop()', () => {
     fc.assert(
       fc.property(fc.array(fc.anything(), 0, 100), fc.nat(150), (arr, n) => {
         const oracle = arr.slice(n);
@@ -203,7 +203,7 @@ describe('using Array as oracle', () => {
         let completed = false;
         pipe(
           fromArray(arr),
-          skip(n),
+          drop(n),
           subscribe(
             data => res.push(data),
             err => {
@@ -219,7 +219,7 @@ describe('using Array as oracle', () => {
     );
   });
 
-  it('last()', () => {
+  it('last', () => {
     fc.assert(
       fc.property(fc.array(fc.anything(), 0, 100), arr => {
         const oracle = arr.slice(-1);
@@ -228,7 +228,7 @@ describe('using Array as oracle', () => {
         let completed = false;
         pipe(
           fromArray(arr),
-          last(),
+          last,
           subscribe(
             data => res.push(data),
             err => {
