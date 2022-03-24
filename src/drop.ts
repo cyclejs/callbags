@@ -1,6 +1,6 @@
-import { Operator } from './types';
+import { Operator, Producer } from './types';
 
-export function skip<T>(n: number): Operator<T, T> {
+export function drop<T>(n: number): Operator<T, T> {
   return source => (_, sink) => {
     let skipped = 0;
 
@@ -10,8 +10,8 @@ export function skip<T>(n: number): Operator<T, T> {
   };
 }
 
-export function last<T>(): Operator<T, T> {
-  return source => (_, sink) => {
+export function last<T>(source: Producer<T>): Producer<T> {
+  return (_, sink) => {
     let last: any[] = [];
 
     source(0, (t, d) => {

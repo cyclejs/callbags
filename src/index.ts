@@ -10,7 +10,7 @@ export { map, scan, debug } from './map';
 export { take, first } from './take';
 export { filter } from './filter';
 export { startWith } from './startWith';
-export { skip, last } from './skip';
+export { drop, last } from './drop';
 export { flatten } from './flatten';
 export { sample, sampleWith, sampleCombine } from './sample';
 export { uponStart, uponEnd } from './hooks';
