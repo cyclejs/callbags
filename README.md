@@ -49,6 +49,7 @@ Currently, the following set of operators is implemented, others might follow. N
 - [`sampleWith`](./src/sample.ts)
 - [`sampleCombine`](./src/sample.ts)
 - [`multicast`](./src/multicast.ts)
+- [`remember`](./src/remember.ts)
 
 ### Sinks
 

@@ -11,7 +11,7 @@ export function multicast<T>(source: Producer<T>): Producer<T> {
     sinks[sinks.indexOf(sink)] = void 0;
 
     // Allow others to subscribe in the same iteration of the JS event loop
-    Promise.resolve().then(() => {
+    queueMicrotask(() => {
       if (sinks.every(x => x === undefined)) {
         sinks = [];
         talkback(2);
