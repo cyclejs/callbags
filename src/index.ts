@@ -15,6 +15,7 @@ export { flatten } from './flatten';
 export { sample, sampleWith, sampleCombine } from './sample';
 export { uponStart, uponEnd } from './hooks';
 export { multicast } from './multicast';
+export { remember } from './remember';
 
 // Sinks
 export { subscribe } from './subscribe';
